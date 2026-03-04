@@ -18,6 +18,7 @@
     <a class="brand" href="#top">VVG</a>
     <nav aria-label="Primary">
       <a href="#impact">Impact</a>
+      <a href="#comcast-projects">Comcast Projects</a>
       <a href="#experience">Experience</a>
       <a href="#python">Python Track</a>
       <a href="#skills">Skills</a>
@@ -92,6 +93,50 @@
             without release locking, while preserving shared UX consistency.
           </p>
           <p class="stack">Micro-frontends, Webpack, Next.js, CI/CD, AWS EKS</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="comcast-projects" class="section" data-reveal>
+      <div class="section-head">
+        <p class="eyebrow">Comcast projects</p>
+        <h2>Platforms I have built and shipped at Comcast</h2>
+      </div>
+      <p class="section-copy">
+        Two production systems where I owned architecture and delivery across frontend, APIs, and release flows.
+      </p>
+      <div class="project-grid">
+        <article class="card project-card">
+          <h3>Comcast Developer Portal</h3>
+          <p>
+            Built critical partner-facing workflows used by external organizations to register, certify, and publish
+            applications on Comcast's platform.
+          </p>
+          <ul class="project-points">
+            <li>Owned app certification workflow including multi-step validation, state transitions, and error recovery.</li>
+            <li>Developed Node.js/Express BFF routes for secure data aggregation and token-safe integrations.</li>
+            <li>Improved page performance with SSR/SSG, code splitting, and bundle optimization.</li>
+          </ul>
+          <p class="stack">React, Next.js, TypeScript, GraphQL, Node.js/Express, AWS EKS</p>
+          <a class="btn btn-ghost project-link" href="https://developer.comcast.com/" target="_blank" rel="noreferrer">
+            Visit Comcast Developer Portal
+          </a>
+        </article>
+
+        <article class="card project-card">
+          <h3>IBIS</h3>
+          <p>
+            Built features on Comcast's internal IBIS platform focused on partner and device operations at enterprise scale.
+          </p>
+          <ul class="project-points">
+            <li>Implemented RxJS-based device data pipelines with retry logic so partial failures do not block full views.</li>
+            <li>Built pagination/state patterns for large partner and device listings, adopted across IBIS modules.</li>
+            <li>Integrated contextual documentation into workflows to reduce partner setup friction.</li>
+          </ul>
+          <p class="stack">Angular, TypeScript, RxJS, NgRx, REST APIs, AWS, Jenkins</p>
+          <a class="btn btn-ghost project-link" href="https://ibis.comcast.com/" target="_blank" rel="noreferrer">
+            Visit IBIS
+          </a>
         </article>
       </div>
     </section>

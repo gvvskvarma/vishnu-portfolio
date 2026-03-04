@@ -251,6 +251,28 @@ h1 {
   color: var(--muted);
 }
 
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.project-card {
+  display: grid;
+  gap: 0.8rem;
+  align-content: start;
+}
+
+.project-points {
+  margin: 0;
+  padding-left: 1.15rem;
+  color: var(--muted);
+}
+
+.project-link {
+  justify-self: start;
+}
+
 .stack {
   margin: 0;
   font-family: var(--mono);
@@ -490,7 +512,8 @@ footer {
 @media (max-width: 980px) {
   .metric-grid,
   .card-grid,
-  .skills-grid {
+  .skills-grid,
+  .project-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -517,7 +540,8 @@ footer {
 
   .metric-grid,
   .card-grid,
-  .skills-grid {
+  .skills-grid,
+  .project-grid {
     grid-template-columns: 1fr;
   }
 
