@@ -168,6 +168,19 @@ h1 {
   background: rgba(255, 255, 255, 0.5);
 }
 
+.btn-resume {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(15, 77, 92, 0.08);
+}
+
+.resume-success {
+  margin: 0.1rem 0 0;
+  font-size: 0.9rem;
+  color: var(--accent);
+  font-family: var(--mono);
+}
+
 .metric-grid {
   list-style: none;
   margin: 1.2rem 0 0;
@@ -353,6 +366,109 @@ h1 {
   background: rgba(255, 255, 255, 0.5);
 }
 
+.contact-resume-btn {
+  margin-top: 1rem;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(23, 20, 17, 0.52);
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  z-index: 30;
+}
+
+.modal-card {
+  width: min(640px, 100%);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 28px 80px rgba(18, 16, 12, 0.25);
+  padding: 1.2rem 1.2rem 1.35rem;
+  position: relative;
+}
+
+.modal-card h2 {
+  margin: 0.35rem 0 1rem;
+  font-size: clamp(1.2rem, 2.4vw, 1.65rem);
+  line-height: 1.24;
+}
+
+.modal-close {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  width: 2rem;
+  height: 2rem;
+  background: #fff;
+  color: var(--muted);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.38rem;
+}
+
+.form-grid label {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--accent);
+  margin-top: 0.35rem;
+}
+
+.form-grid input,
+.form-grid textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font: inherit;
+  font-size: 0.95rem;
+  padding: 0.62rem 0.72rem;
+  color: var(--text);
+  background: #fff;
+}
+
+.form-grid input:focus-visible,
+.form-grid textarea:focus-visible {
+  outline: 2px solid rgba(212, 75, 36, 0.45);
+  border-color: var(--primary);
+}
+
+.form-grid .field-missed {
+  border-color: #b42424;
+  background: #fff6f6;
+}
+
+.form-banner {
+  margin: 0.3rem 0 0.7rem;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: #7f1e1e;
+  background: #ffecec;
+  border: 1px solid #efb2b2;
+  border-radius: 10px;
+  padding: 0.5rem 0.65rem;
+}
+
+.modal-submit {
+  margin-top: 0.95rem;
+}
+
+.honeypot {
+  display: none;
+}
+
+[hidden] {
+  display: none !important;
+}
+
 footer {
   text-align: center;
   padding: 1.2rem;
@@ -407,5 +523,9 @@ footer {
 
   .section {
     padding-top: 3.8rem;
+  }
+
+  .modal-card {
+    padding: 1rem 0.95rem 1.1rem;
   }
 }
