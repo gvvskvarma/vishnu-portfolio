@@ -38,7 +38,11 @@
         <a class="btn btn-primary" href="mailto:gvvskvarma@outlook.com">Email Me</a>
         <a class="btn btn-ghost" href="https://www.linkedin.com/in/gvvskvarma/" target="_blank" rel="noreferrer">LinkedIn</a>
         <a class="btn btn-ghost" href="tel:+18477921881">Call</a>
+        <button class="btn btn-resume" type="button" data-open-resume-modal>Ask Resume Concierge</button>
       </div>
+      <p class="resume-success" id="resume-success" hidden>
+        Request received and queued with priority. Resume delivery to your inbox is in progress.
+      </p>
       <ul class="metric-grid" aria-label="Key achievements">
         <li>
           <strong>8+</strong>
@@ -207,8 +211,53 @@
         <a href="tel:+18477921881">+1 (847) 792-1881</a>
         <a href="https://www.linkedin.com/in/gvvskvarma/" target="_blank" rel="noreferrer">linkedin.com/in/gvvskvarma</a>
       </div>
+      <button class="btn btn-primary contact-resume-btn" type="button" data-open-resume-modal>
+        Ask Resume Concierge
+      </button>
     </section>
   </main>
+
+  <div class="modal-backdrop" id="resume-modal" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="resume-modal-title">
+      <button class="modal-close" type="button" aria-label="Close form" data-close-resume-modal>&times;</button>
+      <p class="eyebrow">Resume request</p>
+      <h2 id="resume-modal-title">Share your details and I will email my resume</h2>
+      <form
+        id="resume-request-form"
+        action="https://formsubmit.co/gvvskvarma@outlook.com"
+        method="POST"
+      >
+        <input type="hidden" name="_subject" value="New Resume Request from Portfolio">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" id="resume-next-url" value="">
+        <input type="text" name="_honey" class="honeypot" tabindex="-1" autocomplete="off">
+        <p class="form-banner" id="resume-form-banner" role="alert" hidden></p>
+
+        <div class="form-grid">
+          <label for="requester-name">Name*</label>
+          <input id="requester-name" name="Name" type="text" required>
+
+          <label for="requester-email">Email*</label>
+          <input id="requester-email" name="Email" type="email" required>
+
+          <label for="requester-company">Company*</label>
+          <input id="requester-company" name="Company" type="text" required>
+
+          <label for="requester-role">Role*</label>
+          <input id="requester-role" name="Role" type="text" required>
+
+          <label for="requester-job">Job Description/Link</label>
+          <textarea id="requester-job" name="Job Description or Link" rows="3"></textarea>
+
+          <label for="requester-phone">Phone</label>
+          <input id="requester-phone" name="Phone" type="tel">
+        </div>
+
+        <button class="btn btn-primary modal-submit" type="submit">Send Resume Signal</button>
+      </form>
+    </div>
+  </div>
 
   <footer>
     <p>Vishnu Vardhan Gottumukkala · Senior Full-Stack Engineer</p>
