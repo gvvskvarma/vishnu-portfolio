@@ -1,18 +1,157 @@
+/* ===== Dark Mode Toggle ===== */
+const themeToggle = document.getElementById("theme-toggle");
+const htmlEl = document.documentElement;
+
+const applyTheme = (theme) => {
+  htmlEl.setAttribute("data-theme", theme);
+  localStorage.setItem("theme", theme);
+};
+
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme) {
+  applyTheme(savedTheme);
+} else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+  applyTheme("dark");
+}
+
+if (themeToggle) {
+  themeToggle.addEventListener("click", () => {
+    const current = htmlEl.getAttribute("data-theme");
+    applyTheme(current === "dark" ? "light" : "dark");
+  });
+}
+
+/* ===== Typed Text Effect ===== */
+const typedEl = document.getElementById("typed-eyebrow");
+const typedPhrases = [
+  "Senior Full-Stack Engineer",
+  "Platform Builder",
+  "Design System Architect",
+  "Performance Engineer",
+  "Engineering Mentor",
+];
+
+let phraseIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
+
+const typeSpeed = 60;
+const deleteSpeed = 35;
+const pauseAfterType = 2000;
+const pauseAfterDelete = 400;
+
+const typeEffect = () => {
+  if (!typedEl) return;
+  const currentPhrase = typedPhrases[phraseIndex];
+
+  if (!isDeleting) {
+    charIndex++;
+    typedEl.textContent = currentPhrase.slice(0, charIndex);
+    if (charIndex === currentPhrase.length) {
+      isDeleting = true;
+      setTimeout(typeEffect, pauseAfterType);
+      return;
+    }
+    setTimeout(typeEffect, typeSpeed);
+  } else {
+    charIndex--;
+    typedEl.textContent = currentPhrase.slice(0, charIndex);
+    if (charIndex === 0) {
+      isDeleting = false;
+      phraseIndex = (phraseIndex + 1) % typedPhrases.length;
+      setTimeout(typeEffect, pauseAfterDelete);
+      return;
+    }
+    setTimeout(typeEffect, deleteSpeed);
+  }
+};
+
+if (typedEl) {
+  const cursor = document.createElement("span");
+  cursor.className = "typed-cursor";
+  typedEl.after(cursor);
+  setTimeout(typeEffect, 600);
+}
+
+/* ===== Counter Animation ===== */
+const counterEls = document.querySelectorAll("[data-count]");
+
+const animateCounter = (el) => {
+  const target = parseInt(el.getAttribute("data-count"), 10);
+  const suffix = el.getAttribute("data-suffix") || "";
+  const duration = 1800;
+  const start = performance.now();
+
+  const step = (now) => {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(eased * target);
+    el.textContent = current + suffix;
+    if (progress < 1) requestAnimationFrame(step);
+  };
+
+  requestAnimationFrame(step);
+};
+
+const counterObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      animateCounter(entry.target);
+      counterObserver.unobserve(entry.target);
+    });
+  },
+  { threshold: 0.5 }
+);
+
+counterEls.forEach((el) => counterObserver.observe(el));
+
+/* ===== Scroll Reveal ===== */
 const revealTargets = document.querySelectorAll("[data-reveal]");
 
-const observer = new IntersectionObserver(
+const revealObserver = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
       entry.target.classList.add("is-visible");
-      observer.unobserve(entry.target);
+
+      const staggerChildren = entry.target.querySelectorAll("[data-reveal-stagger]");
+      staggerChildren.forEach((child, i) => {
+        setTimeout(() => {
+          child.classList.add("is-visible");
+        }, i * 100);
+      });
+
+      revealObserver.unobserve(entry.target);
     });
   },
-  { threshold: 0.16, rootMargin: "0px 0px -40px 0px" }
+  { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
 );
 
-revealTargets.forEach((target) => observer.observe(target));
+revealTargets.forEach((target) => revealObserver.observe(target));
 
+/* Hero stagger items (not inside a data-reveal parent) */
+const heroStagger = document.querySelectorAll(".hero [data-reveal-stagger]");
+const heroObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const items = document.querySelectorAll(".hero [data-reveal-stagger]");
+      items.forEach((child, i) => {
+        setTimeout(() => child.classList.add("is-visible"), i * 120);
+      });
+      heroObserver.unobserve(entry.target);
+    });
+  },
+  { threshold: 0.3 }
+);
+
+if (heroStagger.length > 0) {
+  heroObserver.observe(heroStagger[0]);
+}
+
+/* ===== Active Navigation ===== */
 const navLinks = document.querySelectorAll("header nav a");
 const sections = [...document.querySelectorAll("main section[id]")];
 
@@ -26,13 +165,14 @@ const updateActiveNav = () => {
 
   navLinks.forEach((link) => {
     const isActive = link.getAttribute("href") === `#${activeId}`;
-    link.style.color = isActive ? "var(--primary)" : "var(--muted)";
+    link.style.color = isActive ? "var(--primary)" : "";
   });
 };
 
 window.addEventListener("scroll", updateActiveNav, { passive: true });
 window.addEventListener("load", updateActiveNav);
 
+/* ===== Resume Modal ===== */
 const resumeModal = document.getElementById("resume-modal");
 const resumeOpenButtons = document.querySelectorAll("[data-open-resume-modal]");
 const resumeCloseButtons = document.querySelectorAll("[data-close-resume-modal]");

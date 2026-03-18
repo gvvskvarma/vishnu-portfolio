@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vishnu Vardhan Gottumukkala | Senior Full-Stack Engineer</title>
-  <meta name="description" content="Senior full-stack engineer specializing in frontend-heavy products with React, Next.js, TypeScript, Node.js, .NET, and AWS. Open to senior full-stack and frontend-heavy roles.">
+  <meta name="description" content="Senior full-stack engineer with 8+ years building TypeScript/React and Node.js/GraphQL platforms at scale. Currently at Comcast, leading enterprise developer platforms serving 400+ partner organizations.">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Vishnu Vardhan Gottumukkala | Senior Full-Stack Engineer">
-  <meta property="og:description" content="Senior full-stack engineer portfolio focused on frontend-heavy architecture, scalable product delivery, and end-to-end ownership.">
+  <meta property="og:description" content="Senior full-stack engineer portfolio — frontend-heavy architecture, scalable product delivery, and end-to-end ownership.">
   <meta property="og:url" content="https://gvvskvarma.github.io/vishnu-portfolio/">
   <meta property="og:image" content="https://gvvskvarma.github.io/vishnu-portfolio/assets/social/portfolio-thumbnail.png">
   <meta property="og:image:width" content="1200">
@@ -15,7 +15,7 @@
   <meta property="og:image:alt" content="Vishnu Vardhan Gottumukkala Senior Full-Stack Engineer portfolio preview">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Vishnu Vardhan Gottumukkala | Senior Full-Stack Engineer">
-  <meta name="twitter:description" content="Senior full-stack engineer portfolio focused on frontend-heavy architecture, scalable product delivery, and end-to-end ownership.">
+  <meta name="twitter:description" content="Senior full-stack engineer portfolio — frontend-heavy architecture, scalable product delivery, and end-to-end ownership.">
   <meta name="twitter:image" content="https://gvvskvarma.github.io/vishnu-portfolio/assets/social/portfolio-thumbnail.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,29 +23,35 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <div class="noise" aria-hidden="true"></div>
   <div class="bg-layer bg-one" aria-hidden="true"></div>
   <div class="bg-layer bg-two" aria-hidden="true"></div>
 
   <header class="site-header">
     <a class="brand" href="#top">VVG</a>
     <nav aria-label="Primary">
-      <a href="#impact">Impact</a>
-      <a href="#comcast-projects">Comcast Projects</a>
+      <a href="#achievements">Achievements</a>
+      <a href="#projects">Projects</a>
       <a href="#experience">Experience</a>
-      <a href="#python">Python Track</a>
       <a href="#skills">Skills</a>
+      <a href="#education">Education</a>
       <a href="#contact">Contact</a>
     </nav>
+    <button class="theme-toggle" type="button" aria-label="Toggle dark mode" id="theme-toggle">
+      <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
   </header>
 
   <main id="top">
     <section class="hero">
-      <p class="eyebrow">Senior full-stack engineer</p>
-      <h1>Building enterprise platforms that ship fast, stay reliable, and scale across teams.</h1>
+      <p class="eyebrow" id="typed-eyebrow"></p>
+      <h1><span class="gradient-text">Building enterprise platforms</span> that ship fast, stay reliable, and scale across teams.</h1>
       <p class="lead">
-        I am Vishnu Vardhan Gottumukkala, currently at Comcast, where I build partner-facing products used by
-        hundreds of organizations and thousands of external developers. I work end-to-end across React/Next.js,
-        Node.js/.NET APIs, and AWS delivery pipelines.
+        I am Vishnu Vardhan Gottumukkala, a Senior Full-Stack Engineer at <strong>Comcast</strong> with 8+ years building
+        TypeScript/React and Node.js/GraphQL platforms at scale. I lead end-to-end technical ownership of enterprise
+        developer platforms serving <strong>400+ partner organizations</strong> &mdash; from architecture decisions and engineering
+        standards to CI/CD discipline and biweekly production releases across distributed Agile teams.
       </p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="mailto:gvvskvarma@outlook.com">Email Me</a>
@@ -57,97 +63,132 @@
         Request received and queued with priority. Resume delivery to your inbox is in progress.
       </p>
       <ul class="metric-grid" aria-label="Key achievements">
-        <li>
-          <strong>8+</strong>
+        <li data-reveal-stagger>
+          <strong data-count="8" data-suffix="+">0</strong>
           <span>Years delivering production software</span>
         </li>
-        <li>
-          <strong>3</strong>
-          <span>Product teams using shared component systems I built</span>
+        <li data-reveal-stagger>
+          <strong data-count="400" data-suffix="+">0</strong>
+          <span>Partner organizations served</span>
         </li>
-        <li>
-          <strong>90%+</strong>
-          <span>Test coverage maintained on critical flows</span>
+        <li data-reveal-stagger>
+          <strong data-count="40" data-suffix="%">0</strong>
+          <span>API traffic reduced via caching</span>
         </li>
-        <li>
-          <strong>100s</strong>
-          <span>Partner organizations supported through platform workflows</span>
+        <li data-reveal-stagger>
+          <strong data-count="90" data-suffix="%+">0</strong>
+          <span>Test coverage on critical flows</span>
         </li>
       </ul>
     </section>
 
-    <section id="impact" class="section" data-reveal>
+    <section id="achievements" class="section" data-reveal>
       <div class="section-head">
-        <p class="eyebrow">Featured impact</p>
-        <h2>Work that recruiters can map directly to business outcomes</h2>
+        <p class="eyebrow">Selected Achievements</p>
+        <h2>Measurable impact across architecture, performance, and leadership</h2>
       </div>
       <div class="card-grid">
-        <article class="card">
-          <h3>App Certification Workflow Ownership</h3>
+        <article class="card" data-reveal-stagger>
+          <div class="card-icon">&#9889;</div>
+          <h3>Full Stack Technical Ownership</h3>
           <p>
-            Architected and owned the main certification flow in Comcast Developer Portal:
-            state machine design, multi-step validations, and recovery paths for partner onboarding.
+            Led architecture-to-production delivery of enterprise developer platforms at Comcast &mdash; TypeScript/React + Node.js/GraphQL &mdash; zero regressions across 18+ months of biweekly releases serving 400+ partner organizations.
           </p>
-          <p class="stack">React 18, Next.js, TypeScript, GraphQL, Node.js/Express, JWT/OAuth</p>
         </article>
-        <article class="card">
-          <h3>Shared Design System at Scale</h3>
+        <article class="card" data-reveal-stagger>
+          <div class="card-icon">&#9889;</div>
+          <h3>Performance at Scale</h3>
           <p>
-            Consolidated fragmented UI patterns into a Storybook component library adopted across
-            three teams, reducing duplicated implementation and standardizing accessibility.
+            Cut redundant API traffic by 40% via RTK Query caching &mdash; directly improving partner dashboard responsiveness; Lighthouse-validated Core Web Vitals gains enforced before every production release.
           </p>
-          <p class="stack">React, Storybook, WCAG 2.1 AA, Redux Toolkit, Cypress</p>
         </article>
-        <article class="card">
-          <h3>Independent Team Ship Velocity</h3>
+        <article class="card" data-reveal-stagger>
+          <div class="card-icon">&#9889;</div>
+          <h3>Engineering Standards & Leadership</h3>
           <p>
-            Introduced lazy-loaded micro-frontend boundaries so three teams ship independently
-            without release locking, while preserving shared UX consistency.
+            Introduced micro-frontend architecture enabling 3 teams to ship on independent cadences with zero cross-team coordination; established Git workflows, code review standards, and CI/CD practices adopted team-wide.
           </p>
-          <p class="stack">Micro-frontends, Webpack, Next.js, CI/CD, AWS EKS</p>
+        </article>
+        <article class="card" data-reveal-stagger>
+          <div class="card-icon">&#9889;</div>
+          <h3>Mentorship & Culture</h3>
+          <p>
+            Mentored 3 engineers across code reviews, testing standards, and architecture guidance; Storybook component library adopted across 3 product teams as the org-wide UI standard.
+          </p>
         </article>
       </div>
     </section>
 
-    <section id="comcast-projects" class="section" data-reveal>
+    <section id="projects" class="section" data-reveal>
       <div class="section-head">
-        <p class="eyebrow">Comcast projects</p>
-        <h2>Platforms I have built and shipped at Comcast</h2>
+        <p class="eyebrow">Projects at Comcast</p>
+        <h2>Platforms I have architected and shipped end-to-end</h2>
       </div>
-      <p class="section-copy">
-        Two production systems where I owned architecture and delivery across frontend, APIs, and release flows.
-      </p>
       <div class="project-grid">
-        <article class="card project-card">
+        <article class="card project-card" data-reveal-stagger>
+          <span class="pill">Production</span>
           <h3>Comcast Developer Portal</h3>
           <p>
-            Built critical partner-facing workflows used by external organizations to register, certify, and publish
-            applications on Comcast's platform.
+            Built critical partner-facing workflows used by 400+ external organizations to register, certify,
+            and publish applications on Comcast's platform.
           </p>
           <ul class="project-points">
-            <li>Owned app certification workflow including multi-step validation, state transitions, and error recovery.</li>
-            <li>Developed Node.js/Express BFF routes for secure data aggregation and token-safe integrations.</li>
-            <li>Improved page performance with SSR/SSG, code splitting, and bundle optimization.</li>
+            <li>Owned app certification end-to-end &mdash; state machine, multi-step validation, and error recovery flows.</li>
+            <li>Built org settings, contact management, and login/org-switch dropdown with RBAC enforcement.</li>
+            <li>Self-service portal eliminated manual onboarding bottleneck for 400+ organizations.</li>
+            <li>Consolidated UI into a Storybook component library &mdash; WCAG-accessible, adopted across 3 teams.</li>
+            <li>Maintained 90%+ test coverage: Jest + RTL + Cypress E2E, gated in Concourse CI.</li>
           </ul>
-          <p class="stack">React, Next.js, TypeScript, GraphQL, Node.js/Express, AWS EKS</p>
+          <div class="tech-chips">
+            <span>React 18</span><span>Next.js</span><span>TypeScript</span><span>GraphQL</span>
+            <span>Node.js</span><span>Express</span><span>PostgreSQL</span><span>Redux Toolkit</span>
+            <span>Storybook</span><span>Tailwind CSS</span><span>AWS EKS</span><span>Docker</span>
+          </div>
           <a class="btn btn-ghost project-link" href="https://developer.comcast.com/" target="_blank" rel="noreferrer">
-            Visit Comcast Developer Portal
+            Visit Developer Portal &rarr;
           </a>
         </article>
 
-        <article class="card project-card">
-          <h3>IBIS</h3>
+        <article class="card project-card" data-reveal-stagger>
+          <span class="pill">Production</span>
+          <h3>Global App Platform</h3>
+          <p>
+            Led architecture of Comcast's omni-channel partner platform &mdash; full stack technical decisions
+            from concept through production.
+          </p>
+          <ul class="project-points">
+            <li>Built Node.js/GraphQL microservices &mdash; event-driven messaging, AWS Lambda handlers, async pipeline orchestration.</li>
+            <li>RTK Query caching cut redundant API traffic by 40% for 400+ active organizations.</li>
+            <li>Implemented React Server Components &mdash; reduced client JS payload and improved TTI.</li>
+            <li>Prototyped AI agent and document processing pipeline using OpenAI Codex and Claude Code.</li>
+            <li>90%+ coverage via Playwright E2E + Jest, gated in GitHub Actions; deployed to AWS EKS.</li>
+          </ul>
+          <div class="tech-chips">
+            <span>React 19</span><span>RSC</span><span>TypeScript</span><span>GraphQL</span>
+            <span>Node.js</span><span>RTK Query</span><span>PostgreSQL</span><span>MongoDB</span>
+            <span>AWS Lambda</span><span>Playwright</span><span>Vite</span><span>GitHub Actions</span>
+          </div>
+        </article>
+
+        <article class="card project-card" data-reveal-stagger>
+          <span class="pill">Production</span>
+          <h3>IBIS Platform</h3>
           <p>
             Built features on Comcast's internal IBIS platform focused on partner and device operations at enterprise scale.
           </p>
           <ul class="project-points">
-            <li>Implemented RxJS-based device data pipelines with retry logic so partial failures do not block full views.</li>
-            <li>Built pagination/state patterns for large partner and device listings, adopted across IBIS modules.</li>
-            <li>Integrated contextual documentation into workflows to reduce partner setup friction.</li>
+            <li>Built event-driven device data pipeline with RxJS &mdash; per-request retry logic ensures partial failures never block.</li>
+            <li>Scaled list views to handle thousands of device records &mdash; pagination patterns adopted org-wide.</li>
+            <li>Built reusable Angular Material + Tailwind CSS component library &mdash; WCAG 2.1 AA accessible.</li>
+            <li>Maintained Jenkins CI/CD pipelines &mdash; Docker-containerized deployments to AWS.</li>
           </ul>
-          <p class="stack">Angular, TypeScript, RxJS, NgRx, REST APIs, AWS, Jenkins</p>
+          <div class="tech-chips">
+            <span>Angular 11+</span><span>TypeScript</span><span>RxJS</span><span>NgRx</span>
+            <span>Angular Material</span><span>Tailwind CSS</span><span>Node.js</span><span>REST APIs</span>
+            <span>Jenkins</span><span>Docker</span><span>AWS</span>
+          </div>
           <a class="btn btn-ghost project-link" href="https://ibis.comcast.com/" target="_blank" rel="noreferrer">
-            Visit IBIS
+            Visit IBIS &rarr;
           </a>
         </article>
       </div>
@@ -155,110 +196,130 @@
 
     <section id="experience" class="section" data-reveal>
       <div class="section-head">
-        <p class="eyebrow">Experience timeline</p>
+        <p class="eyebrow">Experience Timeline</p>
         <h2>Frontend-led full-stack delivery in enterprise environments</h2>
       </div>
       <div class="timeline">
-        <article class="timeline-item">
+        <article class="timeline-item" data-reveal-stagger>
+          <div class="timeline-dot">
+            <span class="timeline-pulse"></span>
+          </div>
           <div class="timeline-meta">
-            <span>Sep 2020 - Present</span>
-            <h3>Senior Software Engineer, Comcast</h3>
-            <p>Sunnyvale, CA</p>
+            <span class="timeline-date">Sep 2020 &ndash; Present</span>
+            <span class="duration-badge">4+ years</span>
+            <h3>Senior Software Engineer</h3>
+            <p class="timeline-company">Comcast &middot; Sunnyvale, CA</p>
           </div>
           <ul>
-            <li>Owned partner-critical workflows from architecture to production deployment.</li>
-            <li>Built BFF APIs to aggregate upstream services and secure token exchanges.</li>
-            <li>Improved first-load performance with SSR/SSG, code splitting, and caching.</li>
-            <li>Shipped platforms on AWS EKS with GitHub Actions and on-call support.</li>
+            <li>Owned partner-critical workflows from architecture to production deployment across Developer Portal, Global App Platform, and IBIS.</li>
+            <li>Built BFF APIs to aggregate upstream services and secure token exchanges via Node.js/Express and GraphQL.</li>
+            <li>Improved first-load performance with SSR/SSG, React Server Components, code splitting, and caching.</li>
+            <li>Introduced micro-frontend boundaries enabling 3 teams to ship independently without release locking.</li>
+            <li>Led code reviews across React, Node.js/GraphQL, and TypeScript; mentored 3 engineers.</li>
+            <li>Shipped platforms on AWS EKS with GitHub Actions, Concourse CI, and on-call monitoring via CloudWatch.</li>
           </ul>
         </article>
-        <article class="timeline-item">
+        <article class="timeline-item" data-reveal-stagger>
+          <div class="timeline-dot"></div>
           <div class="timeline-meta">
-            <span>Jan 2018 - Sep 2020</span>
-            <h3>Full Stack Developer, Tower Hill Insurance</h3>
-            <p>Gainesville, FL</p>
+            <span class="timeline-date">Jan 2018 &ndash; Sep 2020</span>
+            <span class="duration-badge">2+ years</span>
+            <h3>Full Stack Developer</h3>
+            <p class="timeline-company">Tower Hill Insurance &middot; Gainesville, FL</p>
           </div>
           <ul>
-            <li>Delivered React and React Native applications for policy, claims, and billing.</li>
-            <li>Contributed to .NET Core API design, SQL modeling, and OAuth authentication.</li>
-            <li>Built automated test coverage and optimized bundle performance for faster loads.</li>
+            <li>Built React + Redux SPA and Node.js REST API backend for billing, claims, and policy management.</li>
+            <li>Designed and optimized PostgreSQL schemas &mdash; indexing strategies and query tuning for compliance-constrained financial data.</li>
+            <li>Developed React Native mobile app with shared Redux + TypeScript logic &mdash; reduced duplicate code by 40%.</li>
+            <li>Built .NET Core / C# API services alongside Node.js &mdash; polyglot backend with RESTful controllers and Entity Framework ORM.</li>
+            <li>TDD with Jest + React Testing Library &mdash; 80%+ automated test coverage on critical billing and claims paths.</li>
+            <li>Full SDLC ownership in Agile/Scrum sprints across product, design, and compliance stakeholders.</li>
           </ul>
-        </article>
-      </div>
-    </section>
-
-    <section id="python" class="section" data-reveal>
-      <div class="section-head">
-        <p class="eyebrow">Python track</p>
-        <h2>Portfolio projects we should build next for Python-heavy roles</h2>
-      </div>
-      <p class="section-copy">
-        You already have strong production full-stack credibility. Adding focused Python projects will make your profile
-        even stronger for backend, platform, and AI-adjacent recruiter screens.
-      </p>
-      <div class="card-grid python-grid">
-        <article class="card python-card">
-          <span class="pill">Project 1</span>
-          <h3>Incident Intelligence Service</h3>
-          <p>
-            Build a FastAPI service that ingests CloudWatch or application logs, classifies incident severity,
-            and generates a concise mitigation summary for on-call engineers.
-          </p>
-          <p class="stack">Python, FastAPI, PostgreSQL, Redis, Celery, Docker</p>
-        </article>
-        <article class="card python-card">
-          <span class="pill">Project 2</span>
-          <h3>Release Risk Predictor</h3>
-          <p>
-            Train a lightweight model on commit metadata, test failures, and change volume to estimate
-            deployment risk and highlight high-risk pull requests before release.
-          </p>
-          <p class="stack">Python, Pandas, scikit-learn, XGBoost, Streamlit</p>
-        </article>
-        <article class="card python-card">
-          <span class="pill">Project 3</span>
-          <h3>API Contract Guardrail Bot</h3>
-          <p>
-            Build a Python CLI that validates OpenAPI schemas, runs contract tests, and comments on pull requests
-            when breaking changes are detected.
-          </p>
-          <p class="stack">Python, pytest, OpenAPI, GitHub Actions, Playwright</p>
         </article>
       </div>
     </section>
 
     <section id="skills" class="section" data-reveal>
       <div class="section-head">
-        <p class="eyebrow">Core stack</p>
-        <h2>Depth across frontend, backend, and delivery systems</h2>
+        <p class="eyebrow">Core Stack</p>
+        <h2>Depth across frontend, backend, cloud, and delivery systems</h2>
       </div>
       <div class="skills-grid">
-        <article>
+        <article class="skill-card" data-reveal-stagger>
           <h3>Frontend</h3>
-          <p>React 18/19, Next.js, TypeScript, Angular, React Native, Tailwind CSS, accessibility.</p>
+          <div class="tech-chips">
+            <span>React 18/19</span><span>Next.js</span><span>TypeScript</span><span>Angular 10+</span>
+            <span>React Native</span><span>Redux Toolkit</span><span>RTK Query</span><span>RxJS</span>
+            <span>NgRx</span><span>Tailwind CSS</span><span>Storybook</span><span>Micro-Frontends</span>
+            <span>WCAG 2.1 AA</span><span>HTML5</span><span>CSS3</span>
+          </div>
         </article>
-        <article>
+        <article class="skill-card" data-reveal-stagger>
           <h3>Backend & APIs</h3>
-          <p>Node.js, Express.js, .NET Core, REST, GraphQL, JWT/OAuth 2.0, microservices.</p>
+          <div class="tech-chips">
+            <span>Node.js</span><span>Express.js</span><span>GraphQL</span><span>Apollo</span>
+            <span>REST APIs</span><span>Microservices</span><span>OAuth2 / JWT</span><span>BFF Patterns</span>
+            <span>.NET Core / C#</span><span>AWS Lambda</span><span>Event-Driven</span>
+          </div>
         </article>
-        <article>
+        <article class="skill-card" data-reveal-stagger>
+          <h3>Databases</h3>
+          <div class="tech-chips">
+            <span>PostgreSQL</span><span>MongoDB</span><span>Relational Modeling</span>
+            <span>Query Optimization</span><span>Indexing</span><span>AWS S3</span>
+          </div>
+        </article>
+        <article class="skill-card" data-reveal-stagger>
           <h3>Cloud & DevOps</h3>
-          <p>AWS EKS/S3/Lambda/CloudWatch, Docker, Kubernetes, Concourse, Jenkins, GitHub Actions.</p>
+          <div class="tech-chips">
+            <span>AWS EKS</span><span>AWS Lambda</span><span>AWS S3</span><span>CloudWatch</span>
+            <span>Docker</span><span>Kubernetes</span><span>GitHub Actions</span><span>Jenkins</span>
+            <span>Concourse CI</span><span>CI/CD Pipelines</span>
+          </div>
         </article>
-        <article>
+        <article class="skill-card" data-reveal-stagger>
           <h3>Testing & Quality</h3>
-          <p>Jest, React Testing Library, Cypress, Playwright, TDD, CI gating, production readiness.</p>
+          <div class="tech-chips">
+            <span>Jest</span><span>React Testing Library</span><span>Cypress</span><span>Playwright</span>
+            <span>Jasmine/Karma</span><span>TDD</span><span>90%+ Coverage</span>
+            <span>Core Web Vitals</span><span>Lighthouse</span><span>Bundle Analyzer</span>
+          </div>
         </article>
-        <article>
-          <h3>Python Expansion</h3>
-          <p>FastAPI, Pandas, pytest, data pipelines, ML-assisted tooling, automation scripting.</p>
+        <article class="skill-card" data-reveal-stagger>
+          <h3>Practices & Tools</h3>
+          <div class="tech-chips">
+            <span>Agile/Scrum</span><span>Technical Leadership</span><span>Code Reviews</span>
+            <span>Engineering Mentorship</span><span>Claude Code</span><span>GitHub Copilot</span>
+            <span>OpenAI Codex</span><span>Git Workflows</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="education" class="section" data-reveal>
+      <div class="section-head">
+        <p class="eyebrow">Education</p>
+        <h2>Academic foundation in computer science and engineering</h2>
+      </div>
+      <div class="education-grid">
+        <article class="card education-card" data-reveal-stagger>
+          <span class="pill">M.S.</span>
+          <h3>Master of Science, Computer Science</h3>
+          <p class="edu-institution">Northern Illinois University &middot; DeKalb, IL</p>
+          <p class="edu-date">Jan 2018 &ndash; Dec 2019</p>
+        </article>
+        <article class="card education-card" data-reveal-stagger>
+          <span class="pill">B.Tech</span>
+          <h3>Bachelor of Technology, Electronics & Communication Engineering</h3>
+          <p class="edu-institution">GITAM University &middot; Hyderabad, India</p>
+          <p class="edu-date">Jul 2013 &ndash; Apr 2017</p>
         </article>
       </div>
     </section>
 
     <section id="contact" class="section contact" data-reveal>
       <p class="eyebrow">Contact</p>
-      <h2>Open to senior full-stack and Python platform opportunities</h2>
+      <h2>Open to senior full-stack and platform engineering opportunities</h2>
       <p class="section-copy">
         Recruiters and hiring managers: I am available for roles focused on high-scale web platforms,
         architecture ownership, and product-driven engineering.
@@ -317,7 +378,7 @@
   </div>
 
   <footer>
-    <p>Vishnu Vardhan Gottumukkala · Senior Full-Stack Engineer</p>
+    <p>Vishnu Vardhan Gottumukkala &middot; Senior Full-Stack Engineer</p>
   </footer>
 
   <script src="script.js"></script>
