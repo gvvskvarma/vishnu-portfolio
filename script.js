@@ -151,6 +151,24 @@ if (heroStagger.length > 0) {
   heroObserver.observe(heroStagger[0]);
 }
 
+/* ===== Mobile Hamburger Menu ===== */
+const navToggle = document.getElementById("nav-toggle");
+const primaryNav = document.getElementById("primary-nav");
+
+if (navToggle && primaryNav) {
+  navToggle.addEventListener("click", () => {
+    navToggle.classList.toggle("is-open");
+    primaryNav.classList.toggle("is-open");
+  });
+
+  primaryNav.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      navToggle.classList.remove("is-open");
+      primaryNav.classList.remove("is-open");
+    });
+  });
+}
+
 /* ===== Active Navigation ===== */
 const navLinks = document.querySelectorAll("header nav a");
 const sections = [...document.querySelectorAll("main section[id]")];
@@ -165,12 +183,31 @@ const updateActiveNav = () => {
 
   navLinks.forEach((link) => {
     const isActive = link.getAttribute("href") === `#${activeId}`;
+    link.classList.toggle("is-active", isActive);
     link.style.color = isActive ? "var(--primary)" : "";
   });
 };
 
 window.addEventListener("scroll", updateActiveNav, { passive: true });
 window.addEventListener("load", updateActiveNav);
+
+/* ===== Back to Top ===== */
+const backToTop = document.getElementById("back-to-top");
+
+if (backToTop) {
+  const toggleBackToTop = () => {
+    const show = window.scrollY > 600;
+    backToTop.hidden = !show;
+    backToTop.classList.toggle("is-visible", show);
+  };
+
+  window.addEventListener("scroll", toggleBackToTop, { passive: true });
+  toggleBackToTop();
+
+  backToTop.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+}
 
 /* ===== Resume Modal ===== */
 const resumeModal = document.getElementById("resume-modal");

@@ -17,10 +17,24 @@
   <meta name="twitter:title" content="Vishnu Vardhan Gottumukkala | Senior Full-Stack Engineer">
   <meta name="twitter:description" content="Senior full-stack engineer portfolio — frontend-heavy architecture, scalable product delivery, and end-to-end ownership.">
   <meta name="twitter:image" content="https://gvvskvarma.github.io/vishnu-portfolio/assets/social/portfolio-thumbnail.png">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='20' width='100' height='100' fill='%23d44b24'/><text x='50' y='68' font-size='52' font-family='system-ui' font-weight='700' fill='white' text-anchor='middle'>V</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Vishnu Vardhan Gottumukkala",
+    "jobTitle": "Senior Software Engineer",
+    "worksFor": { "@type": "Organization", "name": "Comcast" },
+    "url": "https://gvvskvarma.github.io/vishnu-portfolio/",
+    "sameAs": ["https://www.linkedin.com/in/gvvskvarma/"],
+    "email": "gvvskvarma@outlook.com",
+    "knowsAbout": ["React", "TypeScript", "Node.js", "GraphQL", "AWS", "Next.js"]
+  }
+  </script>
 </head>
 <body>
   <div class="noise" aria-hidden="true"></div>
@@ -28,8 +42,11 @@
   <div class="bg-layer bg-two" aria-hidden="true"></div>
 
   <header class="site-header">
-    <a class="brand" href="#top">VVG</a>
-    <nav aria-label="Primary">
+    <a class="brand" href="#top">Vishnu Vardhan Gottumukkala</a>
+    <button class="nav-toggle" type="button" aria-label="Toggle navigation" id="nav-toggle">
+      <span></span><span></span><span></span>
+    </button>
+    <nav aria-label="Primary" id="primary-nav">
       <a href="#achievements">Achievements</a>
       <a href="#projects">Projects</a>
       <a href="#experience">Experience</a>
@@ -206,7 +223,7 @@
           </div>
           <div class="timeline-meta">
             <span class="timeline-date">Sep 2020 &ndash; Present</span>
-            <span class="duration-badge">4+ years</span>
+            <span class="duration-badge">5+ years</span>
             <h3>Senior Software Engineer</h3>
             <p class="timeline-company">Comcast &middot; Sunnyvale, CA</p>
           </div>
@@ -376,6 +393,10 @@
       </form>
     </div>
   </div>
+
+  <button class="back-to-top" id="back-to-top" type="button" aria-label="Back to top" hidden>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+  </button>
 
   <footer>
     <p>Vishnu Vardhan Gottumukkala &middot; Senior Full-Stack Engineer</p>
