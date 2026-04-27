@@ -32,7 +32,7 @@
     "url": "https://gvvskvarma.github.io/vishnu-portfolio/",
     "sameAs": ["https://www.linkedin.com/in/gvvskvarma/"],
     "email": "gvvskvarma@outlook.com",
-    "knowsAbout": ["React", "TypeScript", "Node.js", "GraphQL", "AWS", "Next.js"]
+    "knowsAbout": ["React", "Angular", "TypeScript", "Node.js", "GraphQL", "AWS"]
   }
   </script>
 </head>
@@ -40,7 +40,6 @@
   <div class="noise" aria-hidden="true"></div>
   <div class="bg-layer bg-one" aria-hidden="true"></div>
   <div class="bg-layer bg-two" aria-hidden="true"></div>
-
   <header class="site-header">
     <a class="brand" href="#top">Vishnu Vardhan Gottumukkala</a>
     <button class="nav-toggle" type="button" aria-label="Toggle navigation" id="nav-toggle">
@@ -59,7 +58,6 @@
       <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
     </button>
   </header>
-
   <main id="top">
     <section class="hero">
       <p class="eyebrow" id="typed-eyebrow"></p>
@@ -98,7 +96,6 @@
         </li>
       </ul>
     </section>
-
     <section id="achievements" class="section" data-reveal>
       <div class="section-head">
         <p class="eyebrow">Selected Achievements</p>
@@ -135,7 +132,6 @@
         </article>
       </div>
     </section>
-
     <section id="projects" class="section" data-reveal>
       <div class="section-head">
         <p class="eyebrow">Projects at Comcast</p>
@@ -165,7 +161,6 @@
             Visit Developer Portal &rarr;
           </a>
         </article>
-
         <article class="card project-card" data-reveal-stagger>
           <span class="pill">Production</span>
           <h3>Global App Platform</h3>
@@ -186,7 +181,6 @@
             <span>AWS Lambda</span><span>Playwright</span><span>Vite</span><span>GitHub Actions</span>
           </div>
         </article>
-
         <article class="card project-card" data-reveal-stagger>
           <span class="pill">Production</span>
           <h3>IBIS Platform</h3>
@@ -204,13 +198,9 @@
             <span>Angular Material</span><span>Tailwind CSS</span><span>Java</span><span>Spring Boot</span><span>REST APIs</span>
             <span>Jenkins</span><span>Docker</span><span>AWS</span>
           </div>
-          <a class="btn btn-ghost project-link" href="https://ibis.comcast.com/" target="_blank" rel="noreferrer">
-            Visit IBIS &rarr;
-          </a>
         </article>
       </div>
     </section>
-
     <section id="experience" class="section" data-reveal>
       <div class="section-head">
         <p class="eyebrow">Experience Timeline</p>
@@ -232,7 +222,7 @@
             <li>Built BFF APIs to aggregate upstream services and secure token exchanges via Node.js/Express and GraphQL.</li>
             <li>Improved first-load performance with SSR/SSG, React Server Components, code splitting, and caching.</li>
             <li>Introduced micro-frontend boundaries enabling 3 teams to ship independently without release locking.</li>
-            <li>Led code reviews across React, Node.js/GraphQL, and TypeScript; mentored 3 engineers.</li>
+            <li>Led code reviews across React, Angular, Node.js/GraphQL, and TypeScript; mentored 3 engineers.</li>
             <li>Shipped platforms on AWS EKS with GitHub Actions, Concourse CI, and on-call monitoring via CloudWatch.</li>
           </ul>
         </article>
@@ -245,17 +235,16 @@
             <p class="timeline-company">Tower Hill Insurance</p>
           </div>
           <ul>
-            <li>Built React + Redux SPA and Node.js REST API backend for billing, claims, and policy management.</li>
-            <li>Designed and optimized PostgreSQL schemas &mdash; indexing strategies and query tuning for compliance-constrained financial data.</li>
+            <li>Built React + Redux SPA and C#/.NET Core REST API backend for billing, claims, and policy management.</li>
+            <li>Designed and optimized SQL Server schemas &mdash; indexing strategies and query tuning for compliance-constrained financial data.</li>
             <li>Developed React Native mobile app with shared Redux + TypeScript logic &mdash; reduced duplicate code by 40%.</li>
-            <li>Built .NET Core / C# API services alongside Node.js &mdash; polyglot backend with RESTful controllers and Entity Framework ORM.</li>
+            <li>Built C#/.NET Core API services with ASP.NET Core controllers and Entity Framework ORM &mdash; RESTful endpoints across billing and claims domains.</li>
             <li>TDD with Jest + React Testing Library &mdash; 80%+ automated test coverage on critical billing and claims paths.</li>
             <li>Full SDLC ownership in Agile/Scrum sprints across product, design, and compliance stakeholders.</li>
           </ul>
         </article>
       </div>
     </section>
-
     <section id="skills" class="section" data-reveal>
       <div class="section-head">
         <p class="eyebrow">Core Stack</p>
@@ -276,14 +265,14 @@
           <div class="tech-chips">
             <span>Node.js</span><span>Express.js</span><span>GraphQL</span><span>Apollo</span>
             <span>REST APIs</span><span>Microservices</span><span>OAuth2 / JWT</span><span>BFF Patterns</span>
-            <span>.NET Core / C#</span><span>AWS Lambda</span><span>Event-Driven</span>
+            <span>Java</span><span>Spring Boot</span><span>.NET Core / C#</span><span>AWS Lambda</span><span>Event-Driven</span>
           </div>
         </article>
         <article class="skill-card" data-reveal-stagger>
           <h3>Databases</h3>
           <div class="tech-chips">
-            <span>PostgreSQL</span><span>MongoDB</span><span>Relational Modeling</span>
-            <span>Query Optimization</span><span>Indexing</span><span>AWS S3</span>
+            <span>PostgreSQL</span><span>MongoDB</span><span>Microsoft SQL Server</span>
+            <span>Relational Modeling</span><span>Query Optimization</span><span>Indexing</span><span>AWS S3</span>
           </div>
         </article>
         <article class="skill-card" data-reveal-stagger>
@@ -298,7 +287,7 @@
           <h3>Testing & Quality</h3>
           <div class="tech-chips">
             <span>Jest</span><span>React Testing Library</span><span>Cypress</span><span>Playwright</span>
-            <span>Jasmine/Karma</span><span>TDD</span><span>90%+ Coverage</span>
+            <span>Jasmine/Karma</span><span>xUnit</span><span>TDD</span><span>90%+ Coverage</span>
             <span>Core Web Vitals</span><span>Lighthouse</span><span>Bundle Analyzer</span>
           </div>
         </article>
@@ -306,13 +295,12 @@
           <h3>Practices & Tools</h3>
           <div class="tech-chips">
             <span>Agile/Scrum</span><span>Technical Leadership</span><span>Code Reviews</span>
-            <span>Engineering Mentorship</span><span>Claude Code</span><span>GitHub Copilot</span>
+            <span>Claude Code</span><span>GitHub Copilot</span>
             <span>OpenAI Codex</span><span>Git Workflows</span>
           </div>
         </article>
       </div>
     </section>
-
     <section id="education" class="section" data-reveal>
       <div class="section-head">
         <p class="eyebrow">Education</p>
@@ -333,7 +321,6 @@
         </article>
       </div>
     </section>
-
     <section id="contact" class="section contact" data-reveal>
       <p class="eyebrow">Contact</p>
       <h2>Open to senior full-stack and platform engineering opportunities</h2>
@@ -351,7 +338,6 @@
       </button>
     </section>
   </main>
-
   <div class="modal-backdrop" id="resume-modal" hidden>
     <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="resume-modal-title">
       <button class="modal-close" type="button" aria-label="Close form" data-close-resume-modal>&times;</button>
@@ -368,40 +354,30 @@
         <input type="hidden" name="_next" id="resume-next-url" value="">
         <input type="text" name="_honey" class="honeypot" tabindex="-1" autocomplete="off">
         <p class="form-banner" id="resume-form-banner" role="alert" hidden></p>
-
         <div class="form-grid">
           <label for="requester-name">Name*</label>
           <input id="requester-name" name="Name" type="text" required>
-
           <label for="requester-email">Email*</label>
           <input id="requester-email" name="Email" type="email" required>
-
           <label for="requester-company">Company*</label>
           <input id="requester-company" name="Company" type="text" required>
-
           <label for="requester-role">Role*</label>
           <input id="requester-role" name="Role" type="text" required>
-
           <label for="requester-job">Job Description/Link</label>
           <textarea id="requester-job" name="Job Description or Link" rows="3"></textarea>
-
           <label for="requester-phone">Phone</label>
           <input id="requester-phone" name="Phone" type="tel">
         </div>
-
         <button class="btn btn-primary modal-submit" type="submit">Send Resume Signal</button>
       </form>
     </div>
   </div>
-
   <button class="back-to-top" id="back-to-top" type="button" aria-label="Back to top" hidden>
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
   </button>
-
   <footer>
     <p>Vishnu Vardhan Gottumukkala &middot; Senior Full-Stack Engineer</p>
   </footer>
-
   <script src="script.js"></script>
 </body>
 </html>
