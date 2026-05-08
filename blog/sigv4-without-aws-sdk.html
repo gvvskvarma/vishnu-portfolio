@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signing S3-compatible URLs in a Cloudflare Worker without the AWS SDK | Vishnu</title>
+  <meta name="description" content="How 50 lines of crypto.subtle replaces a 500 KB SDK — a practical guide to AWS Signature V4 pre-signed URLs in Cloudflare Workers, Deno, or Bun.">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Signing S3-compatible URLs in a Cloudflare Worker without the AWS SDK">
+  <meta property="og:description" content="How 50 lines of crypto.subtle replaces a 500 KB SDK.">
+  <meta property="og:url" content="https://gvvskvarma.github.io/vishnu-portfolio/blog/sigv4-without-aws-sdk.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Signing S3-compatible URLs in a Cloudflare Worker without the AWS SDK">
+  <meta name="twitter:description" content="How 50 lines of crypto.subtle replaces a 500 KB SDK.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='20' width='100' height='100' fill='%23d44b24'/><text x='50' y='68' font-size='52' font-family='system-ui' font-weight='700' fill='white' text-anchor='middle'>V</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body class="post-body">
+  <div class="noise" aria-hidden="true"></div>
+  <div class="bg-layer bg-one" aria-hidden="true"></div>
+  <div class="bg-layer bg-two" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <a class="brand" href="../index.html">Vishnu Vardhan Gottumukkala</a>
+    <nav aria-label="Primary">
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#writing">Writing</a>
+      <a href="../index.html#contact">Contact</a>
+    </nav>
+    <button class="theme-toggle" type="button" aria-label="Toggle dark mode" id="theme-toggle">
+      <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </header>
+
+  <main class="post-main">
+    <a class="post-back" href="../index.html#writing">&larr; Back to portfolio</a>
+
+    <article class="post">
+      <header class="post-head">
+        <p class="eyebrow">Writing &middot; Backend &middot; Edge</p>
+        <h1>Signing S3-compatible URLs in a Cloudflare Worker without the AWS SDK</h1>
+        <p class="post-meta">~50 lines of <code>crypto.subtle</code> instead of a 500&nbsp;KB SDK. Why I did it, the gotchas, and the full code.</p>
+      </header>
+
+      <div class="post-body-content">
+        <p>I run a small photography delivery platform on Cloudflare Workers + R2. Every photo download goes through a short-lived <strong>pre-signed URL</strong> that the worker mints and hands to the browser. The browser then talks to R2 directly &mdash; the worker never sees the bytes, which is the whole point of running this on the edge.</p>
+
+        <p>The obvious way to mint those URLs is the AWS SDK for JavaScript: it speaks S3 (which R2 is compatible with), it handles SigV4, you import <code>getSignedUrl</code> and you're done. So I tried that first. Then I looked at my worker bundle and gave up.</p>
+
+        <h2>Why the SDK didn't fit</h2>
+
+        <p>Cloudflare Workers have a <strong>1&nbsp;MB total compressed bundle limit on the free tier</strong> (10&nbsp;MB on paid plans). The AWS SDK for JavaScript v3, even tree-shaken to just the S3 client and the request-presigner, lands at <strong>~500&nbsp;KB unminified</strong>. That's 30%+ of the budget gone for one operation: mint a pre-signed URL.</p>
+
+        <p>I don't need:</p>
+        <ul>
+          <li>multipart upload (R2 supports it but I don't use it yet)</li>
+          <li>retry middleware (the worker calls R2 once per request)</li>
+          <li>the full S3 API surface (~hundreds of operations)</li>
+        </ul>
+
+        <p>I need exactly <em>one thing</em>: take an <code>(method, bucket, key, expiresIn)</code> and return <code>https://&lt;host&gt;/&lt;bucket&gt;/&lt;key&gt;?X-Amz-Signature=...</code></p>
+
+        <p>That's a job for <code>crypto.subtle</code>.</p>
+
+        <h2>What SigV4 actually is</h2>
+
+        <p><a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_aws-signing-version-4.html" target="_blank" rel="noreferrer">AWS Signature Version 4</a> is the signing protocol AWS uses to authenticate requests. For pre-signed URLs in particular ("query parameter authentication"), the recipe is:</p>
+
+        <ol>
+          <li>Build a <strong>canonical request</strong> &mdash; a deterministic string representation of the request (method, path, query params, headers, payload hash).</li>
+          <li>Hash it (<code>SHA-256</code>).</li>
+          <li>Wrap it in a <strong>string to sign</strong> with the date, region, and service.</li>
+          <li>Derive a <strong>signing key</strong> by HMAC-chaining your secret access key through date &rarr; region &rarr; service &rarr; <code>"aws4_request"</code>.</li>
+          <li>HMAC-sign the string-to-sign with the signing key.</li>
+          <li>Stick the signature into the URL as <code>X-Amz-Signature</code>.</li>
+        </ol>
+
+        <p>That's it. Web Crypto exposes both <code>SHA-256</code> and HMAC, so a Worker can do all of this natively.</p>
+
+        <h2>The actual code</h2>
+
+        <p>The version that runs in production:</p>
+
+        <pre><code class="lang-ts">const toHex = (buffer: ArrayBuffer | Uint8Array): string =&gt; {
+  const bytes = buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer)
+  return [...bytes].map((b) =&gt; b.toString(16).padStart(2, '0')).join('')
+}
+
+const sha256Hex = async (value: string): Promise&lt;string&gt; =&gt; {
+  const data = new TextEncoder().encode(value)
+  return toHex(await crypto.subtle.digest('SHA-256', data))
+}
+
+const hmacSha256 = async (key: Uint8Array, value: string): Promise&lt;Uint8Array&gt; =&gt; {
+  const cryptoKey = await crypto.subtle.importKey(
+    'raw', key, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
+  )
+  const sig = await crypto.subtle.sign('HMAC', cryptoKey, new TextEncoder().encode(value))
+  return new Uint8Array(sig)
+}
+
+const asUtcDateParts = (date: Date) =&gt; {
+  const yyyy = date.getUTCFullYear().toString().padStart(4, '0')
+  const mm = (date.getUTCMonth() + 1).toString().padStart(2, '0')
+  const dd = date.getUTCDate().toString().padStart(2, '0')
+  const hh = date.getUTCHours().toString().padStart(2, '0')
+  const mi = date.getUTCMinutes().toString().padStart(2, '0')
+  const ss = date.getUTCSeconds().toString().padStart(2, '0')
+  return {
+    dateStamp: `${yyyy}${mm}${dd}`,
+    amzDate: `${yyyy}${mm}${dd}T${hh}${mi}${ss}Z`,
+  }
+}
+
+export const buildR2SignedUrl = async (
+  env: { R2_ACCOUNT_ID: string; R2_BUCKET: string; R2_ACCESS_KEY_ID: string; R2_SECRET_ACCESS_KEY: string },
+  method: 'GET' | 'PUT',
+  objectKey: string,
+  expiresInSec: number,
+) =&gt; {
+  const now = new Date()
+  const { dateStamp, amzDate } = asUtcDateParts(now)
+  const region = 'auto'
+  const service = 's3'
+  const host = `${env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`
+
+  // Path-style addressing — encode each segment, leave slashes alone
+  const encodedKey = objectKey.split('/').map((s) =&gt; encodeURIComponent(s)).join('/')
+  const canonicalUri = `/${env.R2_BUCKET}/${encodedKey}`
+
+  const credentialScope = `${dateStamp}/${region}/${service}/aws4_request`
+
+  const baseParams = new URLSearchParams({
+    'X-Amz-Algorithm': 'AWS4-HMAC-SHA256',
+    'X-Amz-Credential': `${env.R2_ACCESS_KEY_ID}/${credentialScope}`,
+    'X-Amz-Date': amzDate,
+    'X-Amz-Expires': String(expiresInSec),
+    'X-Amz-SignedHeaders': 'host',
+  })
+
+  // Canonical query string: sorted by key, then encoded
+  const canonicalQuery = [...baseParams.entries()]
+    .sort((a, b) =&gt; a[0].localeCompare(b[0]))
+    .map(([k, v]) =&gt; `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
+    .join('&amp;')
+
+  const canonicalRequest = [
+    method,
+    canonicalUri,
+    canonicalQuery,
+    `host:${host}\n`,    // canonical headers (note trailing newline)
+    'host',              // signed headers list
+    'UNSIGNED-PAYLOAD',  // payload hash placeholder for pre-signed URLs
+  ].join('\n')
+
+  const canonicalRequestHash = await sha256Hex(canonicalRequest)
+
+  const stringToSign = [
+    'AWS4-HMAC-SHA256',
+    amzDate,
+    credentialScope,
+    canonicalRequestHash,
+  ].join('\n')
+
+  // Derive the signing key by HMAC-chaining
+  const kDate    = await hmacSha256(new TextEncoder().encode(`AWS4${env.R2_SECRET_ACCESS_KEY}`), dateStamp)
+  const kRegion  = await hmacSha256(kDate, region)
+  const kService = await hmacSha256(kRegion, service)
+  const kSigning = await hmacSha256(kService, 'aws4_request')
+
+  const signature = toHex(await hmacSha256(kSigning, stringToSign))
+
+  return `https://${host}${canonicalUri}?${canonicalQuery}&amp;X-Amz-Signature=${signature}`
+}</code></pre>
+
+        <p>That's the whole thing. Bundle cost: <strong>a few hundred bytes</strong>.</p>
+
+        <h2>Gotchas I hit</h2>
+
+        <p>A few things that took longer than they should have:</p>
+
+        <h3>1. The trailing newline on the canonical headers</h3>
+
+        <p>Look at this line carefully:</p>
+
+        <pre><code class="lang-ts">`host:${host}\n`,    // canonical headers (note trailing newline)</code></pre>
+
+        <p>The canonical headers section is supposed to end with a newline <em>before</em> the empty line that separates it from the signed-headers list. Miss the <code>\n</code> and R2 returns:</p>
+
+        <pre><code>HTTP/1.1 403 Forbidden
+Content-Length: 0</code></pre>
+
+        <p>No body, no error code, no hint. I bisected my way to the missing newline by diffing against a known-good URL from the AWS SDK.</p>
+
+        <h3>2. <code>region: 'auto'</code> and not <code>'us-east-1'</code></h3>
+
+        <p>R2 uses <code>auto</code> as its region string. Most S3 SigV4 examples use <code>us-east-1</code>. Wrong region &rarr; another silent 403.</p>
+
+        <h3>3. Path-style addressing vs virtual-hosted-style</h3>
+
+        <p>For R2, the canonical URI is <code>/&lt;bucket&gt;/&lt;key&gt;</code>, with the host being <code>&lt;account_id&gt;.r2.cloudflarestorage.com</code>. If you used virtual-hosted-style (bucket as a subdomain) you'd put just <code>/&lt;key&gt;</code> in the canonical URI and the bucket in the host. Pick one and be consistent &mdash; mixing them returns 403.</p>
+
+        <h3>4. URL encoding the key path segments individually</h3>
+
+        <pre><code class="lang-ts">const encodedKey = objectKey.split('/').map((s) =&gt; encodeURIComponent(s)).join('/')</code></pre>
+
+        <p>You want each path segment encoded, but the slashes between them preserved. <code>encodeURIComponent</code> on the whole key would also encode the slashes, breaking the path.</p>
+
+        <h3>5. <code>UNSIGNED-PAYLOAD</code> for pre-signed URLs</h3>
+
+        <p>Pre-signed URLs use the literal string <code>UNSIGNED-PAYLOAD</code> as the payload hash in the canonical request. This trips people up because regular SigV4 (non-pre-signed) requires the actual SHA-256 of the body.</p>
+
+        <h2>When to use this</h2>
+
+        <p>Use this approach if:</p>
+
+        <ul>
+          <li>You're on Cloudflare Workers, Deno, Bun, or anywhere with <code>crypto.subtle</code></li>
+          <li>Your bundle size matters (Workers free tier, edge functions)</li>
+          <li>You only need pre-signed <code>GET</code> and <code>PUT</code> URLs</li>
+        </ul>
+
+        <p><strong>Don't</strong> use this if you need:</p>
+
+        <ul>
+          <li><strong>Multipart upload</strong> &mdash; that's its own SigV4 flow with multiple signatures</li>
+          <li><strong>Server-mediated requests</strong> (not pre-signed) &mdash; those need the payload hash and signed Content-Type header</li>
+          <li><strong>Conditional requests, encryption headers, or anything beyond the basic GET/PUT flow</strong> &mdash; at that point, the SDK weight starts paying for itself</li>
+        </ul>
+
+        <h2>When to use the SDK instead</h2>
+
+        <p>If you're on Node and bundle size doesn't matter, just use <code>@aws-sdk/s3-request-presigner</code>. It's well-tested, handles every edge case, and is the right call for ~95% of S3-touching projects.</p>
+
+        <p>This 50-line approach is for the 5% where you <em>can't</em> afford the SDK and you only need one operation.</p>
+
+        <hr>
+
+        <p>If you want to see this in production, the full implementation lives in <a href="https://github.com/gvvskvarma/rajugari-abbayi-photos" target="_blank" rel="noreferrer">the photography-platform repo</a> &mdash; specifically <a href="https://github.com/gvvskvarma/rajugari-abbayi-photos/blob/main/worker/src/lib.ts" target="_blank" rel="noreferrer"><code>worker/src/lib.ts</code></a> in the <em>R2 / Signed URLs</em> section. The README explains the broader context (it's a photo delivery platform I built for my own freelance photography business &mdash; clients upload via the worker, share-link viewers download via the same signed-URL mechanism).</p>
+      </div>
+
+      <footer class="post-footer">
+        <p class="post-byline">
+          <strong>Vishnu Varma</strong> &mdash; software engineer + freelance photographer.
+        </p>
+        <p class="post-byline-links">
+          <a href="../index.html">Portfolio</a> &middot;
+          <a href="https://rajugariabbayishots.vercel.app" target="_blank" rel="noreferrer">Live photography platform</a>
+        </p>
+      </footer>
+    </article>
+
+    <a class="post-back post-back-bottom" href="../index.html#writing">&larr; Back to portfolio</a>
+  </main>
+
+  <script src="../script.js"></script>
+</body>
+</html>

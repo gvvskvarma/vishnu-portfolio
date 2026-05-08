@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The DNS incident that took down my Supabase project for an afternoon | Vishnu</title>
+  <meta name="description" content="A debugging story about why Healthy in a dashboard is not the same as reachable on the public internet. dig +trace, SERVFAIL vs NXDOMAIN, and what edge-worker error 1016 means.">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="The DNS incident that took down my Supabase project for an afternoon">
+  <meta property="og:description" content="A debugging story about why Healthy in a dashboard is not the same as reachable on the public internet.">
+  <meta property="og:url" content="https://gvvskvarma.github.io/vishnu-portfolio/blog/supabase-dns-incident.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The DNS incident that took down my Supabase project for an afternoon">
+  <meta name="twitter:description" content="A debugging story about why Healthy in a dashboard is not the same as reachable on the public internet.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='20' width='100' height='100' fill='%23d44b24'/><text x='50' y='68' font-size='52' font-family='system-ui' font-weight='700' fill='white' text-anchor='middle'>V</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body class="post-body">
+  <div class="noise" aria-hidden="true"></div>
+  <div class="bg-layer bg-one" aria-hidden="true"></div>
+  <div class="bg-layer bg-two" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <a class="brand" href="../index.html">Vishnu Vardhan Gottumukkala</a>
+    <nav aria-label="Primary">
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#writing">Writing</a>
+      <a href="../index.html#contact">Contact</a>
+    </nav>
+    <button class="theme-toggle" type="button" aria-label="Toggle dark mode" id="theme-toggle">
+      <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </header>
+
+  <main class="post-main">
+    <a class="post-back" href="../index.html#writing">&larr; Back to portfolio</a>
+
+    <article class="post">
+      <header class="post-head">
+        <p class="eyebrow">Writing &middot; Debugging &middot; Incident</p>
+        <h1>The DNS incident that took down my Supabase project for an afternoon</h1>
+        <p class="post-meta">A debugging story about why "Healthy" in a dashboard is not the same as "reachable on the public internet."</p>
+      </header>
+
+      <div class="post-body-content">
+        <p>I shipped a clean refactor on a Friday afternoon. CI passed. Local tests green. Worker deployed. Frontend deployed. I clicked through the app and hit a 500 on every Supabase-backed endpoint.</p>
+
+        <p>This is the story of the next two hours.</p>
+
+        <h2>The first wrong assumption</h2>
+
+        <p>When the API starts throwing 500s right after a refactor, the obvious suspect is the refactor. So I did the obvious thing: rolled back the worker, hit <code>/api/v1/live-config</code> again, still 500. Rolled back the frontend, still 500.</p>
+
+        <p>The worker logs showed:</p>
+
+        <pre><code class="lang-json">{"error":{"message":"Supabase request failed (530): error code: 1016"}}</code></pre>
+
+        <p><code>530</code> is Cloudflare's "origin not reachable." <code>1016</code> is the specific sub-code for <strong>Origin DNS Error</strong> &mdash; Cloudflare's edge could not resolve the upstream hostname. The hostname in question was the one I'd been using for months:</p>
+
+        <pre><code>ogcafgdhchzheennyzva.supabase.co</code></pre>
+
+        <p>The bug wasn't in my code. The hostname itself wasn't resolving.</p>
+
+        <h2>Confirming it wasn't just the worker</h2>
+
+        <p>The first thing I did was open the Supabase URL directly in a browser:</p>
+
+        <pre><code>https://ogcafgdhchzheennyzva.supabase.co/rest/v1/</code></pre>
+
+        <p>Chrome incognito returned <code>DNS_PROBE_FINISHED_NXDOMAIN</code>. So this wasn't specific to Cloudflare's resolver &mdash; the public internet didn't think this hostname existed.</p>
+
+        <p>Except... my <strong>regular Chrome window worked.</strong> The site loaded. Logged-in sessions still functioned.</p>
+
+        <p>That looked like a contradiction. It wasn't. It was DNS caching. Chrome incognito doesn't share DNS cache with the main profile. The main profile had a stale-but-still-working A record from an earlier session.</p>
+
+        <p>So the real state was:</p>
+
+        <ul>
+          <li><strong>Supabase dashboard:</strong> project shows "Healthy"</li>
+          <li><strong>Public DNS:</strong> hostname returns NXDOMAIN/SERVFAIL</li>
+          <li><strong>Workers, incognito browsers, fresh resolvers:</strong> can't connect</li>
+          <li><strong>Cached browsers:</strong> still work, until the cache TTL expires</li>
+        </ul>
+
+        <p>The dashboard "Healthy" status reflects the project's <em>internal</em> services (database, auth, etc.). It doesn't tell you whether DNS is propagating to the public internet. That's a real distinction worth knowing.</p>
+
+        <h2>Going deeper with <code>dig</code></h2>
+
+        <p>I went straight to <code>dig</code>:</p>
+
+        <pre><code class="lang-bash">$ dig ogcafgdhchzheennyzva.supabase.co +short
+$ dig @8.8.8.8 ogcafgdhchzheennyzva.supabase.co
+;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: SERVFAIL, id: 54364</code></pre>
+
+        <p>Empty answer. SERVFAIL from Google's resolver. SERVFAIL from Cloudflare's 1.1.1.1 too.</p>
+
+        <p><code>SERVFAIL</code> is interesting because it's <em>not</em> <code>NXDOMAIN</code>. NXDOMAIN means "this name definitely doesn't exist." SERVFAIL means "I tried to look it up and got an error somewhere." Different failure modes. Mine was the second.</p>
+
+        <p>So I traced the delegation chain:</p>
+
+        <pre><code class="lang-bash">$ dig +trace ogcafgdhchzheennyzva.supabase.co A</code></pre>
+
+        <p>The trace stopped after the root servers. The <code>.co</code> TLD delegation never completed. I tried a known-good <code>.co</code> domain &mdash; same result. I tried <code>google.co</code> from my network &mdash; also no resolution.</p>
+
+        <p>That was the "huh" moment. <strong>The entire <code>.co</code> TLD was failing to resolve from where I was.</strong> Not Supabase's project, not my network &mdash; something broader. Probably a TLD-level routing issue or a ISP-side resolver hiccup that was rolling through.</p>
+
+        <h2>Talking to support</h2>
+
+        <p>By the time I'd worked through this much, I opened a Supabase support ticket with what I had:</p>
+
+        <ul>
+          <li>Project ref (no vanity subdomain)</li>
+          <li>The exact hostname</li>
+          <li><code>dig</code> outputs from local resolver, 8.8.8.8, and 1.1.1.1, all SERVFAIL</li>
+          <li>Traceroute showing <code>.co</code> delegation failing</li>
+          <li>The fact that the Supabase dashboard still showed "Healthy"</li>
+        </ul>
+
+        <p>Support's response was reasonable: SERVFAIL across multiple resolvers points to something upstream, possibly the authoritative chain for that hostname. They asked me to confirm I hadn't ever set up a vanity subdomain (I hadn't), and to send <code>dig +trace</code> output.</p>
+
+        <p>While I was assembling that, I noticed something on a <code>curl</code> retry:</p>
+
+        <pre><code class="lang-bash">$ curl -s "https://photography-api.gvvskvarma-account.workers.dev/api/v1/live-config"
+{"config":{"title":"Akhil Namburi &amp; Bindu Challa's wedding...</code></pre>
+
+        <p>It worked. For exactly one request. Then the next one was back to 530/1016.</p>
+
+        <p>DNS was flickering back. The records were starting to propagate. Within another half hour they'd stabilized. The app came back up on its own.</p>
+
+        <h2>What it actually was</h2>
+
+        <p>The honest answer: I don't fully know. The most likely cause is a transient DNS routing issue at either the <code>.co</code> TLD level or a specific intermediate resolver chain that affected my region. It self-resolved before Supabase support got far enough to tell me anything definitive.</p>
+
+        <p>But the <em>experience</em> taught me a few things that stuck.</p>
+
+        <h2>What I'd do differently</h2>
+
+        <p>A few real takeaways I keep thinking about:</p>
+
+        <p><strong>"Healthy" in a dashboard tells you about the service, not about reachability.</strong> A status page can be all green while the public internet can't find your hostname. If your monitoring depends only on the provider's status, you have a blind spot. I now hit my actual prod URL from an external uptime check, not just the provider's dashboard.</p>
+
+        <p><strong>Reading <code>dig +trace</code> is a real skill, not a curiosity.</strong> SERVFAIL vs NXDOMAIN is a meaningful distinction when something's broken. So is "delegation chain stops at the TLD" vs "stops at the authoritative nameserver." A debugger who can't read DNS output can lose hours guessing.</p>
+
+        <p><strong>Browser DNS cache will lie to you.</strong> If your prod site "still works for me" but is broken in incognito and broken from the worker, the difference is almost always cache. Test in fresh contexts before assuming things are fine.</p>
+
+        <p><strong>Multi-resolver checks are worth their weight.</strong> <code>dig</code> from local, then <code>@8.8.8.8</code>, then <code>@1.1.1.1</code>. If all three SERVFAIL, the problem isn't your ISP. Knowing that fast saves you from chasing a non-existent local config issue.</p>
+
+        <p><strong>Edge workers fail differently than browser fetches.</strong> Cloudflare's origin-DNS error code (1016) is a specific signal. If you're running on edge infra, learn the <a href="https://developers.cloudflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/" target="_blank" rel="noreferrer">Cloudflare error reference</a> once &mdash; when the next 530 lands you'll save half an hour just by knowing where to look.</p>
+
+        <p>The whole thing was, ultimately, a non-event. The platform was down for an afternoon. No clients tried to log in during that window. No data was lost.</p>
+
+        <p>But it was the kind of incident where you spend two hours in <code>dig</code> output and come out the other side with a slightly clearer mental model of how DNS actually works in production. Which is most of why I'm writing it down.</p>
+
+        <hr>
+
+        <p>The platform in question is the photography delivery system I built for my own freelance photography business &mdash; Cloudflare Workers + R2 + Supabase. Code at <a href="https://github.com/gvvskvarma/rajugari-abbayi-photos" target="_blank" rel="noreferrer">github.com/gvvskvarma/rajugari-abbayi-photos</a>, running at <a href="https://rajugariabbayishots.vercel.app" target="_blank" rel="noreferrer">rajugariabbayishots.vercel.app</a>.</p>
+      </div>
+
+      <footer class="post-footer">
+        <p class="post-byline">
+          <strong>Vishnu Varma</strong> &mdash; software engineer + freelance photographer.
+        </p>
+        <p class="post-byline-links">
+          <a href="../index.html">Portfolio</a> &middot;
+          <a href="https://rajugariabbayishots.vercel.app" target="_blank" rel="noreferrer">Live photography platform</a>
+        </p>
+      </footer>
+    </article>
+
+    <a class="post-back post-back-bottom" href="../index.html#writing">&larr; Back to portfolio</a>
+  </main>
+
+  <script src="../script.js"></script>
+</body>
+</html>

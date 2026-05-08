@@ -51,6 +51,7 @@
       <a href="#experience">Experience</a>
       <a href="#skills">Skills</a>
       <a href="#education">Education</a>
+      <a href="#writing">Writing</a>
       <a href="#contact">Contact</a>
     </nav>
     <button class="theme-toggle" type="button" aria-label="Toggle dark mode" id="theme-toggle">
@@ -319,6 +320,32 @@
           <p class="edu-institution">GITAM University &middot; Hyderabad, India</p>
           <p class="edu-date">Jul 2013 &ndash; Apr 2017</p>
         </article>
+      </div>
+    </section>
+    <section id="writing" class="section" data-reveal>
+      <div class="section-head">
+        <p class="eyebrow">Writing</p>
+        <h2>Engineering posts on the harder problems I have solved</h2>
+      </div>
+      <div class="card-grid post-grid">
+        <a class="card post-card" href="blog/sigv4-without-aws-sdk.html" data-reveal-stagger>
+          <p class="post-card-tag">Backend &middot; Edge</p>
+          <h3>Signing S3-compatible URLs in a Cloudflare Worker without the AWS SDK</h3>
+          <p class="post-card-excerpt">
+            ~50 lines of <code>crypto.subtle</code> instead of a 500&nbsp;KB SDK.
+            Why I did it, the gotchas, and the full code.
+          </p>
+          <span class="post-card-cta">Read the post &rarr;</span>
+        </a>
+        <a class="card post-card" href="blog/supabase-dns-incident.html" data-reveal-stagger>
+          <p class="post-card-tag">Debugging &middot; Incident</p>
+          <h3>The DNS incident that took down my Supabase project for an afternoon</h3>
+          <p class="post-card-excerpt">
+            A debugging story about why "Healthy" in a dashboard is not the same
+            as "reachable on the public internet."
+          </p>
+          <span class="post-card-cta">Read the post &rarr;</span>
+        </a>
       </div>
     </section>
     <section id="contact" class="section contact" data-reveal>

@@ -1102,3 +1102,220 @@ footer {
     border-top: 1px solid #ccc;
   }
 }
+
+/* ===== Writing Section (Index) ===== */
+.post-grid {
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+.post-card {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.post-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--card-hover-border);
+}
+.post-card-tag {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 0.25rem 0;
+}
+.post-card h3 {
+  font-size: 1.15rem;
+  line-height: 1.35;
+  margin: 0;
+}
+.post-card-excerpt {
+  color: var(--muted);
+  margin: 0.25rem 0 0.75rem;
+  flex: 1;
+}
+.post-card-excerpt code {
+  font-family: var(--mono);
+  font-size: 0.92em;
+  background: var(--surface-strong);
+  padding: 0.05em 0.35em;
+  border-radius: 4px;
+}
+.post-card-cta {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--primary);
+  font-weight: 500;
+  margin-top: auto;
+}
+
+/* ===== Blog Post Page (blog/*.html) ===== */
+.post-body {
+  background: var(--bg);
+  color: var(--text);
+}
+.post-main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 6.5rem 1.5rem 4rem;
+}
+.post-back {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 2rem;
+  padding: 0.5rem 0;
+  transition: color 0.2s ease;
+}
+.post-back:hover {
+  color: var(--primary);
+}
+.post-back-bottom {
+  margin-top: 3rem;
+  margin-bottom: 0;
+}
+.post-head {
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--line);
+}
+.post-head h1 {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  line-height: 1.2;
+  margin: 0.5rem 0 1rem;
+  letter-spacing: -0.01em;
+}
+.post-meta {
+  font-size: 1.05rem;
+  color: var(--muted);
+  margin: 0;
+  font-style: italic;
+}
+.post-body-content {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--text);
+}
+.post-body-content > * + * {
+  margin-top: 1.25rem;
+}
+.post-body-content h2 {
+  font-size: 1.5rem;
+  margin-top: 2.75rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.005em;
+}
+.post-body-content h3 {
+  font-size: 1.15rem;
+  margin-top: 2rem;
+  margin-bottom: 0.4rem;
+}
+.post-body-content p {
+  margin: 0;
+}
+.post-body-content ul,
+.post-body-content ol {
+  padding-left: 1.5rem;
+  margin: 0;
+}
+.post-body-content li {
+  margin-bottom: 0.5rem;
+}
+.post-body-content a {
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+.post-body-content a:hover {
+  text-decoration-thickness: 2px;
+}
+.post-body-content code {
+  font-family: var(--mono);
+  font-size: 0.92em;
+  background: var(--surface-strong);
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  border: 1px solid var(--line);
+}
+.post-body-content pre {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  box-shadow: var(--shadow);
+}
+.post-body-content pre code {
+  background: none;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  font-size: inherit;
+}
+.post-body-content hr {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 2.5rem 0;
+}
+.post-body-content blockquote {
+  border-left: 3px solid var(--primary);
+  padding-left: 1.25rem;
+  color: var(--muted);
+  margin-left: 0;
+  font-style: italic;
+}
+.post-body-content strong {
+  color: var(--text);
+}
+.post-footer {
+  margin-top: 3.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.post-footer p {
+  margin: 0.25rem 0;
+}
+.post-footer a {
+  color: var(--accent);
+  text-decoration: none;
+}
+.post-footer a:hover {
+  text-decoration: underline;
+}
+
+[data-theme="dark"] .post-body-content code {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.10);
+}
+[data-theme="dark"] .post-body-content pre {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.10);
+}
+[data-theme="dark"] .post-card-excerpt code {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+@media (max-width: 720px) {
+  .post-main {
+    padding: 5rem 1rem 3rem;
+  }
+  .post-body-content {
+    font-size: 1rem;
+  }
+  .post-body-content pre {
+    padding: 1rem;
+    font-size: 0.85rem;
+  }
+}
