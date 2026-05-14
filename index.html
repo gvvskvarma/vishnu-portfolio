@@ -48,6 +48,7 @@
     <nav aria-label="Primary" id="primary-nav">
       <a href="#achievements">Achievements</a>
       <a href="#projects">Projects</a>
+      <a href="#personal-projects">Personal</a>
       <a href="#experience">Experience</a>
       <a href="#skills">Skills</a>
       <a href="#education">Education</a>
@@ -198,6 +199,75 @@
             <span>Angular 17+</span><span>TypeScript</span><span>RxJS</span><span>NgRx</span>
             <span>Angular Material</span><span>Tailwind CSS</span><span>Java</span><span>Spring Boot</span><span>REST APIs</span>
             <span>Jenkins</span><span>Docker</span><span>AWS</span>
+          </div>
+        </article>
+      </div>
+    </section>
+    <section id="personal-projects" class="section" data-reveal>
+      <div class="section-head">
+        <p class="eyebrow">Personal Projects</p>
+        <h2>Side projects I have shipped end-to-end</h2>
+      </div>
+      <div class="project-grid">
+        <article class="card project-card" data-reveal-stagger>
+          <span class="pill">Personal &middot; Live</span>
+          <h3>Engineering Intelligence Platform</h3>
+          <p>
+            An AI platform for engineering teams &mdash; four working modules in one codebase,
+            all on free tiers. Built to demonstrate modern AI engineering (RAG, embeddings,
+            structured LLM output) end-to-end.
+          </p>
+          <ul class="project-points">
+            <li><strong>Codebase Q&amp;A (RAG)</strong> &mdash; Octokit-driven repo indexing, batched Gemini embeddings at 768d, Supabase pgvector with HNSW, cosine-similarity search via a Postgres RPC, citations with file path + line range.</li>
+            <li><strong>Meeting Debrief</strong> &mdash; Gemini JSON-mode extracts structured action items; one click creates a labelled GitHub Issue via the OAuth-captured provider token.</li>
+            <li><strong>Daily Digest</strong> &mdash; parallel Octokit search across activity types, fed to Gemini for a "Yesterday &rarr; Today &rarr; Heads up" briefing.</li>
+            <li><strong>Changelog Generator</strong> &mdash; structured Gemini output returns three audience-tuned Markdown blocks (engineer, PM, customer) from merged PRs.</li>
+            <li>Free-tier discipline: <code>batchEmbedContents</code> dropped a 50-file repo from ~150 API calls to 2. Self-hostable via Docker.</li>
+          </ul>
+          <div class="tech-chips">
+            <span>Next.js 14</span><span>TypeScript</span><span>Express</span>
+            <span>Supabase</span><span>pgvector</span><span>RAG</span><span>Gemini</span>
+            <span>Octokit</span><span>TanStack Query</span><span>Tailwind CSS</span>
+            <span>Vercel</span><span>Render</span><span>Docker</span>
+          </div>
+          <div class="project-actions">
+            <a class="btn btn-primary project-link" href="https://ei-app.vercel.app" target="_blank" rel="noreferrer">
+              Try the live demo &rarr;
+            </a>
+            <a class="btn btn-ghost project-link" href="https://github.com/gvvskvarma/engineering-intelligence" target="_blank" rel="noreferrer">
+              View on GitHub &rarr;
+            </a>
+          </div>
+        </article>
+        <article class="card project-card" data-reveal-stagger>
+          <span class="pill">Personal &middot; Production</span>
+          <h3>Photo Delivery Platform &mdash; Rajugari Abbayi Photography</h3>
+          <p>
+            The platform I built and run for my own freelance photography business. Public
+            portfolio, private client galleries, scoped share links, admin tools &mdash; all on
+            Cloudflare's edge. Not a demo; a working tool I use for actual client deliveries.
+          </p>
+          <ul class="project-points">
+            <li>Hand-rolled HMAC-SigV4 pre-signed R2 URLs in ~50 lines of <code>crypto.subtle</code> &mdash; avoided the 500 KB AWS SDK to fit the Worker's 1 MB bundle budget.</li>
+            <li>JWT-tokenized direct-to-R2 upload sessions with idempotent finalize and compensating rollback &mdash; tokens pinned to (deliveryId, projectId, objectKey, expectedBytes, mimeType) so clients can't lie at finalize.</li>
+            <li>Streaming ZIP downloads with <code>fflate</code> and parallelized R2 reads &mdash; no in-memory buffering, fits within the Worker's 10ms CPU-per-request limit.</li>
+            <li>Refactored a 1,500-line monolithic Hono worker into modular routes (<code>admin</code>, <code>customer</code>, <code>delivery</code>, <code>live</code>, <code>media</code>, <code>upload</code>) plus shared helpers.</li>
+            <li>Pre-release hardening: separated <code>TOKEN_SIGNING_SECRET</code> from the Supabase service-role key, UUID validation against PostgREST injection, DB-first deletes, route-level rate limits. Lighthouse Accessibility / Best Practices / SEO: 100 / 100 / 100.</li>
+          </ul>
+          <div class="tech-chips">
+            <span>React 19</span><span>TypeScript</span><span>Vite</span>
+            <span>Cloudflare Workers</span><span>Hono</span><span>Cloudflare R2</span>
+            <span>Supabase</span><span>PostgreSQL</span><span>RLS</span>
+            <span>JWT</span><span>SigV4</span><span>Vitest</span>
+            <span>Sentry</span><span>Vercel</span>
+          </div>
+          <div class="project-actions">
+            <a class="btn btn-primary project-link" href="https://rajugariabbayishots.vercel.app" target="_blank" rel="noreferrer">
+              Visit the live site &rarr;
+            </a>
+            <a class="btn btn-ghost project-link" href="https://github.com/gvvskvarma/rajugari-abbayi-photos" target="_blank" rel="noreferrer">
+              View on GitHub &rarr;
+            </a>
           </div>
         </article>
       </div>
