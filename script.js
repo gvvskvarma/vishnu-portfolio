@@ -284,29 +284,20 @@ if (params.get("resume") === "requested" && resumeSuccess) {
   history.replaceState({}, "", window.location.pathname);
 }
 
-/* ===== Card tilt on hover =====
-   The tilt transform is driven by JS per animation frame, so we do NOT
-   put a CSS transition on `transform` while the cursor is over the card
-   (that fights the rAF updates and produces a jiggery feel). The smooth
-   snap-back on mouseleave is opt-in via the `.is-untilting` class.
-   Skipped entirely on touch / no-hover devices and when the user prefers
-   reduced motion. */
+/* ===== Depth Effects: card tilt + mesh parallax =====
+   Both are skipped when the user prefers reduced motion or is on a touch /
+   no-hover device — keeps the page accessible and avoids jank on mobile. */
 const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 const hoverQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
-const tiltEnabled = () => !motionQuery.matches && hoverQuery.matches;
+const enableDepth = () => !motionQuery.matches && hoverQuery.matches;
 
-const TILT_MAX = 5; /* degrees — subtle enough to read as polish, not a parlor trick */
+/* --- Card tilt --- */
+const TILT_MAX = 6; /* degrees — keep subtle so it reads as depth, not gimmick */
 const tiltCards = document.querySelectorAll(".card");
 tiltCards.forEach((card) => {
   let raf = 0;
-  let untiltTimer = 0;
-  const onEnter = () => {
-    if (!tiltEnabled()) return;
-    clearTimeout(untiltTimer);
-    card.classList.remove("is-untilting");
-  };
   const onMove = (event) => {
-    if (!tiltEnabled()) return;
+    if (!enableDepth()) return;
     const rect = card.getBoundingClientRect();
     const px = (event.clientX - rect.left) / rect.width;
     const py = (event.clientY - rect.top) / rect.height;
@@ -320,15 +311,30 @@ tiltCards.forEach((card) => {
   };
   const onLeave = () => {
     cancelAnimationFrame(raf);
-    card.classList.add("is-untilting");
     card.style.setProperty("--tilt-x", "0deg");
     card.style.setProperty("--tilt-y", "0deg");
-    /* Drop the class after the ease completes so the next hover is clean. */
-    untiltTimer = window.setTimeout(() => {
-      card.classList.remove("is-untilting");
-    }, 500);
   };
-  card.addEventListener("mouseenter", onEnter);
   card.addEventListener("mousemove", onMove);
   card.addEventListener("mouseleave", onLeave);
 });
+
+/* --- Mesh parallax on scroll --- */
+const meshBg = document.querySelector(".mesh-bg");
+if (meshBg) {
+  let parallaxRaf = 0;
+  const updateParallax = () => {
+    if (motionQuery.matches) {
+      meshBg.style.setProperty("--parallax-y", "0px");
+      return;
+    }
+    /* gentle factor — at 2000px scroll the mesh has only moved ~120px */
+    const offset = window.scrollY * -0.06;
+    meshBg.style.setProperty("--parallax-y", `${offset.toFixed(1)}px`);
+  };
+  const onScroll = () => {
+    cancelAnimationFrame(parallaxRaf);
+    parallaxRaf = requestAnimationFrame(updateParallax);
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  updateParallax();
+}
