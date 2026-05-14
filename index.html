@@ -93,8 +93,8 @@
           <span>API traffic reduced via caching</span>
         </li>
         <li data-reveal-stagger>
-          <strong data-count="90" data-suffix="%+">0</strong>
-          <span>Test coverage on critical flows</span>
+          <strong data-count="15000" data-suffix="+">0</strong>
+          <span>Concurrent requests at sub-100ms p99</span>
         </li>
       </ul>
     </section>
@@ -115,21 +115,21 @@
           <div class="card-icon">&#9889;</div>
           <h3>Performance at Scale</h3>
           <p>
-            Cut redundant API traffic by 40% via RTK Query caching &mdash; directly improving partner dashboard responsiveness; Lighthouse-validated Core Web Vitals gains enforced before every production release.
+            Go microservices with goroutine worker pools sustaining <strong>15,000+ concurrent requests at sub-100ms p99 latency</strong>; <strong>99.95% platform uptime</strong> across AWS EKS; cut redundant API traffic 40% via RTK Query caching on high-traffic partner dashboards.
           </p>
         </article>
         <article class="card" data-reveal-stagger>
           <div class="card-icon">&#9889;</div>
           <h3>Engineering Standards & Leadership</h3>
           <p>
-            Introduced micro-frontend architecture enabling 3 teams to ship on independent cadences with zero cross-team coordination; established Git workflows, code review standards, and CI/CD practices adopted team-wide.
+            Introduced micro-frontend architecture (Webpack 5 Module Federation) enabling 3 teams to ship on independent cadences with zero cross-team coordination; established Git workflows, code review standards, and CI/CD practices adopted team-wide.
           </p>
         </article>
         <article class="card" data-reveal-stagger>
           <div class="card-icon">&#9889;</div>
-          <h3>Angular & Full-Stack Breadth</h3>
+          <h3>Applied AI Engineering</h3>
           <p>
-            Production Angular 17+ platform (IBIS) with NgRx, RxJS pipelines, and Java/Spring Boot APIs at Comcast &mdash; alongside React, .NET Core, and React Native at Tower Hill; full-stack delivery across every major enterprise stack.
+            Shipped two production-grade personal projects end-to-end: an AI platform for engineering teams (RAG codebase Q&amp;A with pgvector + Gemini embeddings, structured-output LLM calls, GitHub issue automation) and a photo-delivery platform on Cloudflare's edge serving my own freelance photography business.
           </p>
         </article>
       </div>
@@ -145,19 +145,24 @@
           <h3>Comcast Developer Portal</h3>
           <p>
             Built critical partner-facing workflows used by 400+ external organizations to register, certify,
-            and publish applications on Comcast's platform.
+            and publish applications on Comcast's platform &mdash; 18+ months of biweekly releases with zero
+            production regressions.
           </p>
           <ul class="project-points">
             <li>Owned app certification end-to-end &mdash; state machine, multi-step validation, and error recovery flows.</li>
-            <li>Built org settings, contact management, and login/org-switch dropdown with RBAC enforcement.</li>
-            <li>Self-service portal eliminated manual onboarding bottleneck for 400+ organizations.</li>
-            <li>Consolidated UI into a Storybook component library &mdash; WCAG-accessible, adopted across 3 teams.</li>
-            <li>Maintained 90%+ test coverage: Jest + RTL + Cypress E2E, gated in Concourse CI.</li>
+            <li><strong>Cut redundant API traffic 40%</strong> via RTK Query caching, request coalescing, and normalized cache invalidation on high-traffic partner dashboards.</li>
+            <li>Designed GraphQL (Apollo) and REST API contracts &mdash; typed error envelopes, OAuth2/JWT auth, backwards-compatible schema evolution.</li>
+            <li>Introduced <strong>micro-frontend Module Federation (Webpack 5)</strong> &mdash; 3 teams ship independently without release locking.</li>
+            <li>Engineered React 18 components with custom hooks (<code>useOrg</code>, <code>usePermissions</code>, <code>usePaginatedData</code>), <code>useMemo</code>/<code>useCallback</code>, and Suspense-driven loading &mdash; cut re-renders on data-intensive views.</li>
+            <li>Enforced Core Web Vitals as CI gates &mdash; Lighthouse budgets on LCP, INP, CLS blocked any release with regressions.</li>
+            <li>Consolidated UI into a Storybook component library &mdash; WCAG 2.1 AA accessible, adopted across 3 teams.</li>
+            <li>Maintained 90%+ test coverage: Jest + RTL + Cypress E2E, gated in Concourse CI; deployed to AWS EKS via Docker.</li>
           </ul>
           <div class="tech-chips">
             <span>React 18</span><span>TypeScript</span><span>GraphQL</span>
             <span>Node.js</span><span>Express</span><span>PostgreSQL</span><span>Redux Toolkit</span>
-            <span>Storybook</span><span>Tailwind CSS</span><span>AWS EKS</span><span>Docker</span>
+            <span>RTK Query</span><span>Module Federation</span><span>Storybook</span>
+            <span>Tailwind CSS</span><span>AWS EKS</span><span>Docker</span><span>Concourse CI</span>
           </div>
           <a class="btn btn-ghost project-link" href="https://developer.comcast.com/" target="_blank" rel="noreferrer">
             Visit Developer Portal &rarr;
@@ -168,19 +173,21 @@
           <h3>Global App Platform</h3>
           <p>
             Led architecture of Comcast's omni-channel partner platform &mdash; full stack technical decisions
-            from concept through production.
+            from concept through production, scaled to 400+ active organizations.
           </p>
           <ul class="project-points">
-            <li>Built Node.js/GraphQL microservices &mdash; event-driven messaging, AWS Lambda handlers, async pipeline orchestration.</li>
-            <li>RTK Query caching cut redundant API traffic by 40% for 400+ active organizations.</li>
-            <li>Implemented React Server Components &mdash; reduced client JS payload and improved TTI.</li>
-            <li>Prototyped AI agent and document processing pipeline using OpenAI Codex and Claude Code.</li>
-            <li>90%+ coverage via Playwright E2E + Jest, gated in GitHub Actions; deployed to AWS EKS.</li>
+            <li>Built <strong>Go microservices</strong> with goroutine worker pools and <code>pgxpool</code> connection management &mdash; sustained <strong>15,000+ concurrent requests at sub-100ms p99</strong> latency with circuit-breaker isolation.</li>
+            <li>Built Node.js/GraphQL BFF layer with event-driven messaging and AWS Lambda handlers; React Server Components reduced client JS payload and improved TTI.</li>
+            <li>Designed <strong>Python data pipelines</strong> with pandas on AWS Lambda + S3 &mdash; aggregated partner analytics with idempotent retries and dead-letter queues.</li>
+            <li>Introduced <strong>AWS X-Ray</strong> distributed tracing across the BFF and Go services &mdash; cut mean time to detection by <strong>50%</strong> by pinpointing slow spans across service boundaries.</li>
+            <li>Hardened secrets handling via <strong>AWS Secrets Manager</strong> &mdash; per-environment rotation, IAM-scoped access, eliminated env-file leakage risk.</li>
+            <li>Prototyped AI agent and document processing pipeline using OpenAI Codex and Claude Code; 90%+ coverage via Playwright E2E + Jest, gated in GitHub Actions; deployed to AWS EKS.</li>
           </ul>
           <div class="tech-chips">
             <span>React 19</span><span>RSC</span><span>TypeScript</span><span>GraphQL</span>
-            <span>Node.js</span><span>RTK Query</span><span>PostgreSQL</span><span>MongoDB</span>
-            <span>AWS Lambda</span><span>Playwright</span><span>Vite</span><span>GitHub Actions</span>
+            <span>Node.js</span><span>Go</span><span>Python</span><span>pgxpool</span>
+            <span>PostgreSQL</span><span>MongoDB</span><span>AWS Lambda</span><span>AWS X-Ray</span>
+            <span>Secrets Manager</span><span>Playwright</span><span>GitHub Actions</span>
           </div>
         </article>
         <article class="card project-card" data-reveal-stagger>
@@ -190,15 +197,19 @@
             Built features on Comcast's internal IBIS platform focused on partner and device operations at enterprise scale.
           </p>
           <ul class="project-points">
-            <li>Built event-driven device data pipeline with RxJS &mdash; per-request retry logic ensures partial failures never block.</li>
-            <li>Scaled list views to handle thousands of device records &mdash; pagination patterns adopted org-wide.</li>
+            <li>Built event-driven device data pipeline with RxJS &mdash; per-request retry logic ensures partial failures never block; <strong>NgRx</strong> state slices keep selectors memoized across thousands of device records.</li>
+            <li>Tuned change detection with Angular <code>OnPush</code> + <code>trackBy</code> across heavy list views &mdash; eliminated unnecessary re-renders, scaled lists to thousands of rows. Pagination patterns adopted org-wide.</li>
+            <li>Shipped a <strong>30% bundle size reduction</strong> via lazy-loaded feature modules, route-level code splitting, and tree-shakable Angular Material imports.</li>
+            <li>Designed a reusable <strong>reactive form system</strong> with cross-field validators and async server-side validators &mdash; cut form boilerplate across 12+ workflows.</li>
             <li>Built reusable Angular Material + Tailwind CSS component library &mdash; WCAG 2.1 AA accessible.</li>
+            <li>Backend Spring Boot services with <strong>JUnit + Mockito</strong> test pyramid &mdash; mocked external dependencies, isolated service-layer unit tests, integration tests against H2.</li>
             <li>Maintained Jenkins CI/CD pipelines &mdash; Docker-containerized deployments to AWS.</li>
           </ul>
           <div class="tech-chips">
             <span>Angular 17+</span><span>TypeScript</span><span>RxJS</span><span>NgRx</span>
-            <span>Angular Material</span><span>Tailwind CSS</span><span>Java</span><span>Spring Boot</span><span>REST APIs</span>
-            <span>Jenkins</span><span>Docker</span><span>AWS</span>
+            <span>OnPush</span><span>Reactive Forms</span><span>Angular Material</span><span>Tailwind CSS</span>
+            <span>Java</span><span>Spring Boot</span><span>JUnit</span><span>Mockito</span>
+            <span>REST APIs</span><span>Jenkins</span><span>Docker</span><span>AWS</span>
           </div>
         </article>
       </div>
@@ -300,7 +311,7 @@
         <article class="timeline-item" data-reveal-stagger>
           <div class="timeline-dot"></div>
           <div class="timeline-meta">
-            <span class="timeline-date">Jan 2018 &ndash; Sep 2020</span>
+            <span class="timeline-date">Jun 2018 &ndash; Sep 2020</span>
             <span class="duration-badge">2+ years</span>
             <h3>Full Stack Developer</h3>
             <p class="timeline-company">Tower Hill Insurance</p>
@@ -334,22 +345,28 @@
         <article class="skill-card" data-reveal-stagger>
           <h3>Backend & APIs</h3>
           <div class="tech-chips">
-            <span>Node.js</span><span>Express.js</span><span>GraphQL</span><span>Apollo</span>
-            <span>REST APIs</span><span>Microservices</span><span>OAuth2 / JWT</span><span>BFF Patterns</span>
-            <span>Java</span><span>Spring Boot</span><span>.NET Core / C#</span><span>AWS Lambda</span><span>Event-Driven</span>
+            <span>Node.js</span><span>Express.js</span><span>Go</span><span>Python</span>
+            <span>GraphQL</span><span>Apollo</span><span>REST APIs</span><span>Microservices</span>
+            <span>OAuth2 / JWT</span><span>BFF Patterns</span><span>Java</span><span>Spring Boot</span>
+            <span>.NET Core / C#</span><span>AWS Lambda</span><span>Cloudflare Workers (Hono)</span><span>Event-Driven</span>
           </div>
         </article>
         <article class="skill-card" data-reveal-stagger>
           <h3>Databases</h3>
           <div class="tech-chips">
-            <span>PostgreSQL</span><span>MongoDB</span><span>Microsoft SQL Server</span>
-            <span>Relational Modeling</span><span>Query Optimization</span><span>Indexing</span><span>AWS S3</span>
+            <span>PostgreSQL</span><span>Supabase + RLS</span><span>MongoDB</span><span>Microsoft SQL Server</span>
+            <span>T-SQL</span><span>Redis</span><span>Entity Framework Core</span><span>JPA / Hibernate</span>
+            <span>Relational Modeling</span><span>Query Optimization</span><span>Indexing</span>
+            <span>AWS S3</span><span>Cloudflare R2</span>
           </div>
         </article>
         <article class="skill-card" data-reveal-stagger>
           <h3>Cloud & DevOps</h3>
           <div class="tech-chips">
-            <span>AWS EKS</span><span>AWS Lambda</span><span>AWS S3</span><span>CloudWatch</span>
+            <span>AWS EKS</span><span>AWS Lambda</span><span>AWS S3</span><span>AWS CloudFront</span>
+            <span>AWS X-Ray</span><span>AWS Secrets Manager</span><span>CloudWatch</span>
+            <span>Cloudflare Workers</span><span>Cloudflare R2</span><span>Vercel</span>
+            <span>Azure</span><span>Azure DevOps</span>
             <span>Docker</span><span>Kubernetes</span><span>GitHub Actions</span><span>Jenkins</span>
             <span>Concourse CI</span><span>CI/CD Pipelines</span>
           </div>
@@ -357,16 +374,25 @@
         <article class="skill-card" data-reveal-stagger>
           <h3>Testing & Quality</h3>
           <div class="tech-chips">
-            <span>Jest</span><span>React Testing Library</span><span>Cypress</span><span>Playwright</span>
-            <span>Jasmine/Karma</span><span>xUnit</span><span>TDD</span><span>90%+ Coverage</span>
+            <span>Jest</span><span>Vitest</span><span>React Testing Library</span><span>Cypress</span>
+            <span>Playwright</span><span>JUnit</span><span>Mockito</span><span>Jasmine/Karma</span>
+            <span>xUnit</span><span>TDD</span><span>90%+ Coverage</span>
             <span>Core Web Vitals</span><span>Lighthouse</span><span>Bundle Analyzer</span>
+          </div>
+        </article>
+        <article class="skill-card" data-reveal-stagger>
+          <h3>AI Engineering</h3>
+          <div class="tech-chips">
+            <span>RAG</span><span>Vector Search</span><span>Embeddings</span><span>pgvector (HNSW)</span>
+            <span>Google Gemini API</span><span>LLM Structured Output (JSON-mode)</span>
+            <span>Prompt Engineering</span><span>Octokit</span><span>Supabase Auth (OAuth)</span>
           </div>
         </article>
         <article class="skill-card" data-reveal-stagger>
           <h3>Practices & Tools</h3>
           <div class="tech-chips">
             <span>Agile/Scrum</span><span>Technical Leadership</span><span>Code Reviews</span>
-            <span>Claude Code</span><span>GitHub Copilot</span>
+            <span>Claude Code</span><span>Cursor</span><span>GitHub Copilot</span>
             <span>OpenAI Codex</span><span>Git Workflows</span>
           </div>
         </article>
