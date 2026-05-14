@@ -1345,3 +1345,10 @@ footer {
   background: rgba(255, 255, 255, 0.06);
   border-color: rgba(255, 255, 255, 0.10);
 }
+
+/* ===== Personal Projects grid override =====
+   Stack both cards full-width — they each have heavy content and look
+   cramped in the 2-column grid the Comcast section uses. */
+#personal-projects .project-grid {
+  grid-template-columns: 1fr;
+}
